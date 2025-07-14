@@ -1,0 +1,59 @@
+package com.navent.entertainmentcompse.data
+
+import com.navent.entertainmentcompse.model.CategoryTrivia
+import com.navent.entertainmentcompse.model.TriviaQuestion
+import com.navent.entertainmentcompse.model.TriviaResponse
+import com.navent.entertainmentcompse.service.ApiGame
+import com.navent.entertainmentcompse.ui.Resource
+import timber.log.Timber
+import javax.inject.Inject
+
+
+class GameRepository @Inject constructor(
+    val gameRepository: ApiGame
+){
+
+
+
+    suspend fun getCategories(): Resource<CategoryTrivia> {
+        val response = try {
+            gameRepository.getCategories()
+        } catch (e: Exception) {
+            return Resource.Error("An unknown error occured: ${e.localizedMessage}")
+        }
+
+        return Resource.Success(response)
+    }
+
+    suspend fun getTriviaQuestions( categoryId: String,
+                                       amount: Int,
+                                       type: String,
+                                    difficulty: String):
+            Resource<List<TriviaQuestion>>  {
+
+        val response = try {
+            Timber.tag("GameRepository").d("Le estamos enviando: category=$categoryId, type=$type, difficulty=$difficulty")
+            gameRepository.getQuestions(category= categoryId,amount = amount, type = type, difficulty = difficulty)
+        } catch (e: Exception) {
+            return Resource.Error("An unknown error occured: ${e.localizedMessage}")
+        }
+
+        return Resource.Success(response.questions)
+    }
+
+//    suspend fun getTriviaQuestions(): List<TriviaQuestion>? {
+//        return try {
+//            val response = gameRepository.getCategories()
+//            response.results
+//        } catch (e: Exception) {
+//            null
+//        }
+//    }
+
+//    suspend fun getDataInnerGame(amount : String,category : String) = safeCall {
+//        gameRepository.getData(amount,category)
+//    }
+
+
+
+}
