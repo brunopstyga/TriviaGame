@@ -14,12 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,15 +34,16 @@ import androidx.navigation.NavHostController
 import com.navent.entertainmentcompse.model.Category
 import com.navent.entertainmentcompse.navigation.Screen
 import com.navent.entertainmentcompse.navigation.toRoute
-import com.navent.entertainmentcompse.ui.Select
+import com.navent.entertainmentcompse.commons.Select
 import com.navent.entertainmentcompse.ui.select.viewmodel.GameViewModel
 import com.navent.entertainmentcompse.util.AlertGameDialog
 import timber.log.Timber
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryScreen(viewModel: GameViewModel = hiltViewModel(), navController: NavHostController) {
+fun CategoryScreen(viewModel: GameViewModel = hiltViewModel(),
+                   navController: NavHostController,
+                   onTitleChange: (String) -> Unit) {
 
     val isLoading = viewModel.isLoading.value
 
@@ -59,24 +57,18 @@ fun CategoryScreen(viewModel: GameViewModel = hiltViewModel(), navController: Na
 
     val selectedCategory by viewModel.selectedCategory.observeAsState()
 
+    val amount by viewModel.selectedAmount.observeAsState()
+
+    val triviaQuestions by viewModel.triviaQuestions.observeAsState(emptyList())
+
     LaunchedEffect(Unit) {
+        onTitleChange("Inicio")
         viewModel.getDataCategories()
     }
 
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Game") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF6200EE), // Color de fondo del Toolbar
-                    titleContentColor = Color.White, // Color del texto del título
-                    actionIconContentColor = Color.White // Color de los íconos de acción
-                ),
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-    ) { innerPadding ->
+    Scaffold ( modifier = Modifier.fillMaxSize(),
+        containerColor = Color.Gray)
+    { innerPadding ->
         if (isLoading) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -125,6 +117,8 @@ fun CategoryScreen(viewModel: GameViewModel = hiltViewModel(), navController: Na
                     }
                 )
 
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Button(
                     onClick = {
                         val isFormComplete = viewModel.startGame()
@@ -134,7 +128,7 @@ fun CategoryScreen(viewModel: GameViewModel = hiltViewModel(), navController: Na
 
                             val categoryId = Uri.encode((selectedCategory?.id ?: "").toString())
                             val difficultyEncoded = Uri.encode(difficulty ?: "")
-                            val typeEncoded = Uri.encode(type?.let { mapTypeToApiValue(it)})
+                            val typeEncoded = Uri.encode(type?.let { mapTypeToApiValue(it) })
 
                             val route = "${Screen.TriviaQuestionScreen.toRoute()}/$categoryId/$difficultyEncoded/$typeEncoded"
 
@@ -143,9 +137,25 @@ fun CategoryScreen(viewModel: GameViewModel = hiltViewModel(), navController: Na
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Iniciar juego")
+                    Text("Info Trivia")
                 }
 
+                Spacer(modifier = Modifier.height(16.dp))
+
+                NumberSelector(
+                    selectedNumber = amount,
+                    onNumberSelected = { viewModel.setSelectedAmount(it) }
+                )
+
+                Button(
+                    onClick = {
+                          viewModel.getTrivia(amount ?: 10, selectedCategory?.id ?: 0)
+                        triviaQuestions
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Jugar")
+                }
                 if (showDialog) {
                     AlertGameDialog(
                         title = "Atención",

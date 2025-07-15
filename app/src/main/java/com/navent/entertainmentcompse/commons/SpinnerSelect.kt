@@ -1,4 +1,4 @@
-package com.navent.entertainmentcompse.ui
+package com.navent.entertainmentcompse.commons
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -7,8 +7,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.navent.entertainmentcompse.data.GameRepository
 import com.navent.entertainmentcompse.model.Category
+import com.navent.entertainmentcompse.model.TriviaQuestion
+import com.navent.entertainmentcompse.model.TriviaResponse
 import com.navent.entertainmentcompse.ui.Resource
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,6 +20,9 @@ class GameViewModel @Inject constructor(
 ) : ViewModel() {
 
     var isLoading = mutableStateOf(false)
+
+    private val _triviaQuestions = MutableLiveData<List<TriviaQuestion>>()
+    val triviaQuestions: LiveData<List<TriviaQuestion>> = _triviaQuestions
 
     private var _gameCategories = MutableLiveData<List<Category>>()
     val gameCategories: LiveData<List<Category>> = _gameCategories
@@ -27,6 +33,9 @@ class GameViewModel @Inject constructor(
     private val _type = MutableLiveData<String?>()
     val type: LiveData<String?> = _type
 
+    private val _selectedAmount = MutableLiveData<Int?>()
+    val selectedAmount: LiveData<Int?> = _selectedAmount
+
     private var _selectedCategoryId = MutableLiveData<Category?>(null)
     val selectedCategory: LiveData<Category?> = _selectedCategoryId
 
@@ -36,6 +45,10 @@ class GameViewModel @Inject constructor(
 
     fun setSelectedType(selectedType: String) {
         _type.value = selectedType
+    }
+
+    fun setSelectedAmount(amount: Int) {
+        _selectedAmount.value = amount
     }
 
     fun startGame(): Boolean {
@@ -61,6 +74,39 @@ class GameViewModel @Inject constructor(
             isLoading.value = false
         }
     }
+
+
+
+
+    fun getTrivia(amount: Int, categoryId: Int) {
+        viewModelScope.launch {
+            isLoading.value = true
+
+            val result = gameRepository.getData(amount = amount.toString(), categoryId = categoryId)
+
+            when (result) {
+                is Resource.Success -> {
+                    val triviaResponse = result.data ?: emptyList()
+                    _triviaQuestions.postValue(triviaResponse)
+                }
+
+                is Resource.Error -> {
+                    Timber.e("getTrivia", "Error: ${result.message}")
+                    _triviaQuestions.postValue(emptyList())
+                }
+
+                is Resource.Loading -> {
+                    // opcional: podrías hacer algo con loading
+                }
+            }
+
+            isLoading.value = false
+        }
+    }
+
+
+
+
 
     fun setSelectedCategory(category: Category) {
         _selectedCategoryId.value = category

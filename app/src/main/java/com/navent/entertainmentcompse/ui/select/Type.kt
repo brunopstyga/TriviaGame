@@ -1,7 +1,7 @@
 package com.navent.entertainmentcompse.ui.select
 
 import androidx.compose.runtime.Composable
-import com.navent.entertainmentcompse.ui.Select
+import com.navent.entertainmentcompse.commons.Select
 import java.util.Locale
 
 @Composable

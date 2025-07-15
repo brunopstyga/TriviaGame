@@ -22,7 +22,11 @@ data class TriviaQuestion(
     val type: String,
     val difficulty: String,
     val question: String,
-    val createdBy: String
+    val createdBy: String,
+    @SerializedName("correct_answer")
+    val correctAnswer: String,
+    @SerializedName("incorrect_answers")
+    val incorrectAnswers: List<String>
 )
 
 data class TriviaQueryParams(
@@ -31,16 +35,9 @@ data class TriviaQueryParams(
     val type: String = "multiple"
 )
 
-data class Results(
-    @SerializedName("correct_answer")
-    val correctAnswer: String,
-    @SerializedName("incorrect_answers")
-    val incorrectAnswers: List<String>
-)
-
 data class Response(
     @SerializedName("response_code")
     val responseCode: String,
-    val results: List<Results>
+    val results: List<TriviaQuestion>
 )
 

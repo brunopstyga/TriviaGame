@@ -10,10 +10,10 @@ import retrofit2.http.Query
 
 interface ApiGame {
 
-    @GET("/api.php/{amount}/{category}")
-    suspend fun getData(@Query("amount") amount: String?,
-                        @Query("category") category: String?
-                        ): Response
+//    @GET("/api.php/{amount}/{category}")
+//    suspend fun getData(@Query("amount") amount: String?,
+//                        @Query("category") category: String?
+//                        ): Response
 
     @GET("/api_category.php")
     suspend fun getCategories(): CategoryTrivia
@@ -26,30 +26,17 @@ interface ApiGame {
         @Query("type") type: String
     ): TriviaResponse
 
+    @GET("api.php")
+    suspend fun getData(
+        @Query("amount") amount: String,
+        @Query("category") category: Int
+    ): retrofit2.Response<TriviaResponse>
 
-/*
- @GET("/api.php")
-    suspend fun getData(@Query("amount") amount: String?): Response
- */
+
 
 //    https://opentdb.com/api.php?amount=10&category=9
 
-    /*
-     @GET("installments")
-    suspend fun getInstallments(
-        @Query("amount") amount: String,
-        @Query("payment_method_id") methodId: String,
-        @Query("issuer.id") issuer: String,
-    ): List<Installment>
-     */
 
-    /*
-    @POST("v2/leads/{lead_type_id}/{posting_id}")
-fun generateLeadWspOrCall(
-        @Path("lead_type_id") leadType: LeadType,
-        @Path("posting_id") postingId: String,
-        @Query("email") email: String? = null): MutableLiveData<WSResponse<BSRELeadMessage>>
-     */
 
 
 }

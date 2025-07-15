@@ -19,13 +19,18 @@ import com.navent.entertainmentcompse.model.TriviaQuestion
 import timber.log.Timber
 
 @Composable
-fun TriviaQuestionScreen(category: String, type: String,difficulty: String,viewModel: TriviaQuestionViewModel = hiltViewModel()) {
+fun TriviaQuestionScreen(category: String,
+                         type: String,
+                         difficulty: String,
+                         viewModel: TriviaQuestionViewModel = hiltViewModel(),
+                         onTitleChange: (String) -> Unit) {
 
     val triviaQuestions by viewModel.triviaQuestions.observeAsState(emptyList())
     val isLoading = viewModel.isLoading.value
 
 
     LaunchedEffect(Unit) {
+        onTitleChange("Trivia Info")
         viewModel.getDataTriviaQuestion(category = category, type = type,difficulty = difficulty)
         Timber.d("TriviaQuestionScreen - Le estamos enviando: category=$category, type=$type, difficulty=$difficulty")
     }
@@ -61,7 +66,9 @@ val fakeQuestions = listOf(
         type = "multiple",
         difficulty = "easy",
         question = "What is the capital of France?",
-        createdBy = "MockUser"
+        createdBy = "MockUser",
+        correctAnswer = "Paris",
+        incorrectAnswers = listOf("London", "Berlin", "Madrid")
     ),
     TriviaQuestion(
         id = 2,
@@ -69,7 +76,9 @@ val fakeQuestions = listOf(
         type = "multiple",
         difficulty = "medium",
         question = "Which planet is known as the Red Planet?",
-        createdBy = "TestUser"
+        createdBy = "TestUser",
+        correctAnswer = "Mars",
+        incorrectAnswers = listOf("Venus", "Jupiter", "Saturn")
     ),
     TriviaQuestion(
         id = 3,
@@ -77,7 +86,9 @@ val fakeQuestions = listOf(
         type = "multiple",
         difficulty = "hard",
         question = "Who painted the Mona Lisa?",
-        createdBy = "System"
+        createdBy = "System",
+        correctAnswer = "Leonardo da Vinci",
+        incorrectAnswers = listOf("Pablo Picasso", "Vincent van Gogh", "Michelangelo")
     )
 )
 

@@ -14,7 +14,8 @@ import com.navent.entertainmentcompse.ui.trivia.TriviaQuestionScreen
 @Composable
 fun NavigationGraph(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    onTitleChange: (String) -> Unit
 ) {
     NavHost(
         modifier = modifier,
@@ -23,7 +24,9 @@ fun NavigationGraph(
     ) {
 
         composable(Screen.CategoryScreen.toRoute()) {
-            CategoryScreen(navController = navController)
+            CategoryScreen(navController = navController,
+                onTitleChange = onTitleChange
+            )
         }
         composable(
             route = "${Screen.TriviaQuestionScreen.toRoute()}/{categoryId}/{difficulty}/{type}",
@@ -39,7 +42,8 @@ fun NavigationGraph(
             TriviaQuestionScreen(
                 category = category,
                 difficulty = difficulty,
-                type = type
+                type = type,
+                onTitleChange = onTitleChange
             )
 
         }

@@ -10,10 +10,7 @@ import javax.inject.Inject
 
 
 class GameRepository @Inject constructor(
-    val gameRepository: ApiGame
-){
-
-
+    val gameRepository: ApiGame){
 
     suspend fun getCategories(): Resource<CategoryTrivia> {
         val response = try {
@@ -41,18 +38,21 @@ class GameRepository @Inject constructor(
         return Resource.Success(response.questions)
     }
 
-//    suspend fun getTriviaQuestions(): List<TriviaQuestion>? {
-//        return try {
-//            val response = gameRepository.getCategories()
-//            response.results
-//        } catch (e: Exception) {
-//            null
-//        }
-//    }
+    suspend fun getData(amount: String, categoryId: Int): Resource<List<TriviaQuestion>> {
+        val response = try {
+            gameRepository.getData(amount = amount, category = categoryId)
+        } catch (e: Exception) {
+            return Resource.Error("An unknown error occurred: ${e.localizedMessage}")
+        }
 
-//    suspend fun getDataInnerGame(amount : String,category : String) = safeCall {
-//        gameRepository.getData(amount,category)
-//    }
+        return if (response.isSuccessful) {
+            response.body()?.let { body ->
+                Resource.Success(body.questions)
+            } ?: Resource.Error("Empty response body")
+        } else {
+            Resource.Error("Error fetching data: ${response.message()}")
+        }
+    }
 
 
 
