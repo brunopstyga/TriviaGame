@@ -6,17 +6,21 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.navent.entertainmentcompse.data.GameRepository
+import com.navent.entertainmentcompse.di.MainDispatcher
 import com.navent.entertainmentcompse.model.Category
 import com.navent.entertainmentcompse.model.TriviaQuestion
 import com.navent.entertainmentcompse.model.TriviaResponse
 import com.navent.entertainmentcompse.ui.Resource
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
-    private val gameRepository: GameRepository
+    private val gameRepository: GameRepository,
+    @MainDispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
     var isLoading = mutableStateOf(false)
@@ -62,7 +66,7 @@ class GameViewModel @Inject constructor(
     }
 
     fun getDataCategories() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             isLoading.value = true
             val categ = gameRepository.getCategories()
             if (categ is Resource.Success) {
@@ -95,7 +99,7 @@ class GameViewModel @Inject constructor(
 
 
     fun getTrivia(amount: Int, categoryId: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             isLoading.value = true
 
             val result = gameRepository.getData(amount = amount.toString(), categoryId = categoryId)

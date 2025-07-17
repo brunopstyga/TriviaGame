@@ -78,6 +78,13 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.compose)
     implementation(libs.androidx.lifecycle.runtime.compose.android)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.slf4j.nop)
+    testImplementation(libs.robolectric)
     ksp(libs.hilt.compiler)
 
 
