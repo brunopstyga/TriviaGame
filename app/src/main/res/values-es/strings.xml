@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Trivia App</string>
+    <string name="screen_title">Home</string>
+    <string name="configure_items">Configure the Items to Play</string>
+    <string name="select_category">Select a category</string>
+    <string name="select_difficulty">Select a difficulty</string>
+    <string name="select_type">Select a type</string>
+    <string name="info_trivia">Trivia Info</string>
+    <string name="select_amount">Select the number of questions</string>
+    <string name="play">Play</string>
+    <string name="reset">Reset</string>
+    <string name="attention">Attention</string>
+    <string name="complete_fields">You must complete all fields to continue.</string>
+    <string name="ok">OK</string>
+    <string name="correct">Correct!</string>
+    <string name="incorrect">Incorrect</string>
+    <string name="correct_answer_was">The correct answer was: %1$s</string>
+    <string name="next">Next</string>
+    <string name="atenttion">Atención</string>
+    <string name="well_done">Well done! That is the correct answer</string>
+    <string name="accept">accept</string>
+</resources>

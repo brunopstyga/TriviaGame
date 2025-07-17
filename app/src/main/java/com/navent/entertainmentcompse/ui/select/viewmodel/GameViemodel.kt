@@ -39,6 +39,9 @@ class GameViewModel @Inject constructor(
     private var _selectedCategoryId = MutableLiveData<Category?>(null)
     val selectedCategory: LiveData<Category?> = _selectedCategoryId
 
+    private val _gameFinished = MutableLiveData(false)
+    val gameFinished: LiveData<Boolean> = _gameFinished
+
     fun setSelectedDifficulty(selectedDifficulty: String) {
         _difficulty.value = selectedDifficulty
     }
@@ -54,8 +57,8 @@ class GameViewModel @Inject constructor(
     fun startGame(): Boolean {
         val categorySelected = _selectedCategoryId.value != null
         val difficultySelected = !_difficulty.value.isNullOrBlank()
-
-        return categorySelected && difficultySelected
+         val amount = _selectedAmount.value ?: 0
+        return categorySelected && difficultySelected && amount > 0
     }
 
     fun getDataCategories() {
@@ -75,7 +78,20 @@ class GameViewModel @Inject constructor(
         }
     }
 
+    fun setGameFinished(finished: Boolean) {
+        _gameFinished.value = finished
+    }
 
+    fun resetGame() {
+        _triviaQuestions.value = emptyList()
+
+        _difficulty.value = null
+        _type.value = null
+        _selectedAmount.value = null
+        _selectedCategoryId.value = null
+
+        _gameFinished.value = false
+    }
 
 
     fun getTrivia(amount: Int, categoryId: Int) {
@@ -83,7 +99,7 @@ class GameViewModel @Inject constructor(
             isLoading.value = true
 
             val result = gameRepository.getData(amount = amount.toString(), categoryId = categoryId)
-
+            Timber.tag("getTrivia").d("los datos getTrivia: ${result.data}")
             when (result) {
                 is Resource.Success -> {
                     val triviaResponse = result.data ?: emptyList()
@@ -95,18 +111,12 @@ class GameViewModel @Inject constructor(
                     _triviaQuestions.postValue(emptyList())
                 }
 
-                is Resource.Loading -> {
-                    // opcional: podrías hacer algo con loading
-                }
+                is Resource.Loading -> {}
             }
 
             isLoading.value = false
         }
     }
-
-
-
-
 
     fun setSelectedCategory(category: Category) {
         _selectedCategoryId.value = category
@@ -115,5 +125,4 @@ class GameViewModel @Inject constructor(
     fun getSelectedCategoryName(): String {
         return _selectedCategoryId.value?.name ?: "Sin nombre"
     }
-
 }

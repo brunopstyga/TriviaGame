@@ -20,7 +20,6 @@ private const val BASE_URL = "https://opentdb.com/"
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
 
-
     @Singleton
     @Provides
     fun gameApiService(): ApiGame {

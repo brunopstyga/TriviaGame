@@ -1,6 +1,8 @@
 package com.navent.entertainmentcompse.ui.select
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.navent.entertainmentcompse.R
 import com.navent.entertainmentcompse.commons.Select
 
 @Composable
@@ -15,6 +17,6 @@ fun NumberSelector(
         selectedItem = selectedNumber,
         onItemSelected = { onNumberSelected(it) },
         itemToString = { it.toString() },
-        placeholder = "Selecciona un número"
+        placeholder = stringResource(R.string.select_amount)
     )
 }

@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 
 class GameRepository @Inject constructor(
-    val gameRepository: ApiGame){
+    private val gameRepository: ApiGame){
 
     suspend fun getCategories(): Resource<CategoryTrivia> {
         val response = try {
@@ -53,7 +53,4 @@ class GameRepository @Inject constructor(
             Resource.Error("Error fetching data: ${response.message()}")
         }
     }
-
-
-
 }

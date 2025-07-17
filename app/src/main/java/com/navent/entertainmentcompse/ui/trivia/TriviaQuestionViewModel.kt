@@ -36,8 +36,6 @@ class TriviaQuestionViewModel@Inject constructor(
             isLoading.value = false
         }
     }
-
-
 }
 
 

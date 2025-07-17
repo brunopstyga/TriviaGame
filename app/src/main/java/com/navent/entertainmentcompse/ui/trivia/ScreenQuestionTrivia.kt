@@ -1,7 +1,10 @@
 package com.navent.entertainmentcompse.ui.trivia
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
@@ -11,12 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.navent.entertainmentcompse.R
 import com.navent.entertainmentcompse.model.TriviaQuestion
-import timber.log.Timber
 
 @Composable
 fun TriviaQuestionScreen(category: String,
@@ -27,16 +32,24 @@ fun TriviaQuestionScreen(category: String,
 
     val triviaQuestions by viewModel.triviaQuestions.observeAsState(emptyList())
     val isLoading = viewModel.isLoading.value
-
+    val context = LocalContext.current
+    val title = context.getString(R.string.info_trivia)
 
     LaunchedEffect(Unit) {
-        onTitleChange("Trivia Info")
+        onTitleChange(title)
         viewModel.getDataTriviaQuestion(category = category, type = type,difficulty = difficulty)
-        Timber.d("TriviaQuestionScreen - Le estamos enviando: category=$category, type=$type, difficulty=$difficulty")
     }
 
     if (isLoading) {
-        CircularProgressIndicator()
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(64.dp),
+                strokeWidth = 6.dp
+            )
+        }
     } else {
         LazyColumn {
             items(triviaQuestions) { question ->

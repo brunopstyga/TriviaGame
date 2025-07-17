@@ -10,11 +10,6 @@ import retrofit2.http.Query
 
 interface ApiGame {
 
-//    @GET("/api.php/{amount}/{category}")
-//    suspend fun getData(@Query("amount") amount: String?,
-//                        @Query("category") category: String?
-//                        ): Response
-
     @GET("/api_category.php")
     suspend fun getCategories(): CategoryTrivia
 
@@ -31,12 +26,5 @@ interface ApiGame {
         @Query("amount") amount: String,
         @Query("category") category: Int
     ): retrofit2.Response<TriviaResponse>
-
-
-
-//    https://opentdb.com/api.php?amount=10&category=9
-
-
-
 
 }

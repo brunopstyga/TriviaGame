@@ -15,7 +15,6 @@ sealed class Screen {
     data object TriviaQuestionScreen : Screen()
 }
 
-
 fun Screen.toRoute(): String {
     return when (this) {
         is Screen.GameScreen -> "game_screen"

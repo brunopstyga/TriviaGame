@@ -40,4 +40,3 @@ data class Response(
     val responseCode: String,
     val results: List<TriviaQuestion>
 )
-

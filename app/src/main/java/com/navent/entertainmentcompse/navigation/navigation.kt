@@ -24,7 +24,8 @@ fun NavigationGraph(
     ) {
 
         composable(Screen.CategoryScreen.toRoute()) {
-            CategoryScreen(navController = navController,
+            CategoryScreen(
+                navController = navController,
                 onTitleChange = onTitleChange
             )
         }
@@ -45,9 +46,7 @@ fun NavigationGraph(
                 type = type,
                 onTitleChange = onTitleChange
             )
-
         }
     }
-
 }
 
