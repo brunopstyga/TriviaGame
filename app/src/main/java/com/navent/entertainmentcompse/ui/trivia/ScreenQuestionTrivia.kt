@@ -12,8 +12,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.navent.entertainmentcompse.R
 import com.navent.entertainmentcompse.model.TriviaQuestion
+import com.navent.entertainmentcompse.util.characterDecode
 
 @Composable
 fun TriviaQuestionScreen(category: String,
@@ -30,8 +31,8 @@ fun TriviaQuestionScreen(category: String,
                          viewModel: TriviaQuestionViewModel = hiltViewModel(),
                          onTitleChange: (String) -> Unit) {
 
-    val triviaQuestions by viewModel.triviaQuestions.observeAsState(emptyList())
-    val isLoading = viewModel.isLoading.value
+    val state by viewModel.uiState.collectAsState()
+
     val context = LocalContext.current
     val title = context.getString(R.string.info_trivia)
 
@@ -40,7 +41,7 @@ fun TriviaQuestionScreen(category: String,
         viewModel.getDataTriviaQuestion(category = category, type = type,difficulty = difficulty)
     }
 
-    if (isLoading) {
+    if (state.isLoading) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -52,7 +53,7 @@ fun TriviaQuestionScreen(category: String,
         }
     } else {
         LazyColumn {
-            items(triviaQuestions) { question ->
+            items(state.triviaQuestions) { question ->
                 TriviaQuestionItem(question = question)
             }
         }
@@ -63,10 +64,10 @@ fun TriviaQuestionScreen(category: String,
 @Composable
 fun TriviaQuestionItem(question: TriviaQuestion) {
     Column(modifier = Modifier.padding(16.dp)) {
-        Text(text = question.question, style = MaterialTheme.typography.bodyLarge)
-        Text(text = "Category: ${question.category}", style = MaterialTheme.typography.bodyLarge)
+        Text(text = characterDecode(question.question), style = MaterialTheme.typography.bodyLarge)
+        Text(text = "Category: ${characterDecode(question.category)}", style = MaterialTheme.typography.bodyLarge)
         Text(
-            text = "Difficulty: ${question.difficulty}",
+            text = "Difficulty: ${characterDecode(question.difficulty)}",
             style = MaterialTheme.typography.bodyLarge
         )
     }

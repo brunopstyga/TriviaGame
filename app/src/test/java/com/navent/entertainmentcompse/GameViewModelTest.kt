@@ -1,7 +1,6 @@
 package com.navent.entertainmentcompse
 
 import android.os.Looper
-import com.navent.entertainmentcompse.Util.getOrAwaitValue
 import com.navent.entertainmentcompse.data.GameRepository
 import com.navent.entertainmentcompse.model.Category
 import com.navent.entertainmentcompse.model.CategoryTrivia
@@ -12,9 +11,16 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.*
-import org.junit.*
-import org.junit.Assert.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
@@ -91,7 +97,8 @@ class GameViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
         shadowOf(Looper.getMainLooper()).idle()
 
-        val result = viewModel.triviaQuestions.getOrAwaitValue()
+        val state = viewModel.uiState.value
+        val result = state.triviaQuestions
         assertEquals(2, result.size)
         assertEquals("What is the boiling point of water?", result[0].question)
     }
@@ -109,7 +116,9 @@ class GameViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
         shadowOf(Looper.getMainLooper()).idle()
 
-        val result = viewModel.triviaQuestions.getOrAwaitValue()
+
+        val state = viewModel.uiState.value
+        val result = state.triviaQuestions
         assertTrue(result.isEmpty())
     }
 
@@ -174,7 +183,8 @@ class GameViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
         shadowOf(Looper.getMainLooper()).idle()
 
-        val result = viewModel.gameCategories.getOrAwaitValue()
+        val state = viewModel.uiState.value
+        val result = state.categories
         assertEquals(2, result.size)
         assertEquals("General", result[0].name)
     }
@@ -193,7 +203,8 @@ class GameViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
         shadowOf(Looper.getMainLooper()).idle()
 
-        val result = viewModel.gameCategories.getOrAwaitValue()
+        val state = viewModel.uiState.value
+        val result = state.categories
         assertTrue(result.isEmpty())
     }
 }

@@ -13,6 +13,10 @@ import com.navent.entertainmentcompse.model.TriviaResponse
 import com.navent.entertainmentcompse.ui.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,110 +27,95 @@ class GameViewModel @Inject constructor(
     @MainDispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
-    var isLoading = mutableStateOf(false)
+    private val _uiState = MutableStateFlow(CategoryUiState())
+    val uiState: StateFlow<CategoryUiState> = _uiState.asStateFlow()
 
-    private val _triviaQuestions = MutableLiveData<List<TriviaQuestion>>()
-    val triviaQuestions: LiveData<List<TriviaQuestion>> = _triviaQuestions
-
-    private var _gameCategories = MutableLiveData<List<Category>>()
-    val gameCategories: LiveData<List<Category>> = _gameCategories
-
-    private val _difficulty = MutableLiveData<String?>()
-    val difficulty: LiveData<String?> = _difficulty
-
-    private val _type = MutableLiveData<String?>()
-    val type: LiveData<String?> = _type
-
-    private val _selectedAmount = MutableLiveData<Int?>()
-    val selectedAmount: LiveData<Int?> = _selectedAmount
-
-    private var _selectedCategoryId = MutableLiveData<Category?>(null)
-    val selectedCategory: LiveData<Category?> = _selectedCategoryId
-
-    private val _gameFinished = MutableLiveData(false)
-    val gameFinished: LiveData<Boolean> = _gameFinished
-
-    fun setSelectedDifficulty(selectedDifficulty: String) {
-        _difficulty.value = selectedDifficulty
+    fun setSelectedCategory(category: Category) {
+        _uiState.update { it.copy(selectedCategory = category) }
     }
 
-    fun setSelectedType(selectedType: String) {
-        _type.value = selectedType
+    fun setSelectedDifficulty(difficulty: String) {
+        _uiState.update { it.copy(selectedDifficulty = difficulty) }
+    }
+
+    fun setSelectedType(type: String) {
+        _uiState.update { it.copy(selectedType = type) }
     }
 
     fun setSelectedAmount(amount: Int) {
-        _selectedAmount.value = amount
+        _uiState.update { it.copy(selectedAmount = amount) }
+    }
+
+
+    fun setGameFinished(finished: Boolean) {
+        _uiState.update { it.copy(gameFinished = finished) }
     }
 
     fun startGame(): Boolean {
-        val categorySelected = _selectedCategoryId.value != null
-        val difficultySelected = !_difficulty.value.isNullOrBlank()
-         val amount = _selectedAmount.value ?: 0
-        return categorySelected && difficultySelected && amount > 0
+        val state = _uiState.value
+        return state.selectedCategory != null &&
+                !state.selectedDifficulty.isNullOrBlank() &&
+                (state.selectedAmount ?: 0) > 0
+    }
+
+    fun resetGame() {
+        _uiState.update {
+            it.copy(
+                triviaQuestions = emptyList(),
+                selectedDifficulty = null,
+                selectedType = null,
+                selectedAmount = null,
+                selectedCategory = null,
+                gameFinished = false
+            )
+        }
     }
 
     fun getDataCategories() {
         viewModelScope.launch(dispatcher) {
-            isLoading.value = true
-            val categ = gameRepository.getCategories()
-            if (categ is Resource.Success) {
-                val categories = categ.data?.triviaCategory ?: emptyList()
-                categories.forEach {
-                    setSelectedCategory(Category(it.id, it.name))
+            _uiState.update { it.copy(isLoading = true) }
+
+            when (val result = gameRepository.getCategories()) {
+                is Resource.Success -> {
+                    val categories = result.data?.triviaCategory ?: emptyList()
+                    _uiState.update {
+                        it.copy(
+                            categories = categories,
+                            selectedCategory = categories.firstOrNull()
+                        )
+                    }
                 }
-                _gameCategories.postValue(categories)
-            } else {
-                _gameCategories.postValue(emptyList())
+                is Resource.Error -> {
+                    _uiState.update { it.copy(categories = emptyList()) }
+                }
+                else -> {}
             }
-            isLoading.value = false
+
+            _uiState.update { it.copy(isLoading = false) }
         }
     }
-
-    fun setGameFinished(finished: Boolean) {
-        _gameFinished.value = finished
-    }
-
-    fun resetGame() {
-        _triviaQuestions.value = emptyList()
-
-        _difficulty.value = null
-        _type.value = null
-        _selectedAmount.value = null
-        _selectedCategoryId.value = null
-
-        _gameFinished.value = false
-    }
-
 
     fun getTrivia(amount: Int, categoryId: Int) {
         viewModelScope.launch(dispatcher) {
-            isLoading.value = true
+            _uiState.update { it.copy(isLoading = true) }
 
-            val result = gameRepository.getData(amount = amount.toString(), categoryId = categoryId)
-            Timber.tag("getTrivia").d("los datos getTrivia: ${result.data}")
-            when (result) {
+            when (val result = gameRepository.getData(amount.toString(), categoryId)) {
                 is Resource.Success -> {
-                    val triviaResponse = result.data ?: emptyList()
-                    _triviaQuestions.postValue(triviaResponse)
+                    _uiState.update {
+                        it.copy(triviaQuestions = result.data ?: emptyList())
+                    }
                 }
-
                 is Resource.Error -> {
-                    Timber.e("getTrivia", "Error: ${result.message}")
-                    _triviaQuestions.postValue(emptyList())
+                    _uiState.update { it.copy(triviaQuestions = emptyList()) }
                 }
-
-                is Resource.Loading -> {}
+                else -> {}
             }
 
-            isLoading.value = false
+            _uiState.update { it.copy(isLoading = false) }
         }
     }
 
-    fun setSelectedCategory(category: Category) {
-        _selectedCategoryId.value = category
-    }
-
     fun getSelectedCategoryName(): String {
-        return _selectedCategoryId.value?.name ?: "Sin nombre"
+        return _uiState.value.selectedCategory?.name ?: "Sin nombre"
     }
 }

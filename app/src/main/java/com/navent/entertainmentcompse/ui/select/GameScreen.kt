@@ -15,8 +15,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -47,42 +47,25 @@ fun CategoryScreen(
     onTitleChange: (String) -> Unit
 ) {
 
-    val isLoading = viewModel.isLoading.value
-
     val context = LocalContext.current
     val title = context.getString(R.string.screen_title)
 
-    val gameFinished by viewModel.gameFinished.observeAsState(false)
-
-    val categories = viewModel.gameCategories.observeAsState(initial = emptyList())
-
-    val difficulty by viewModel.difficulty.observeAsState()
-
-    val type by viewModel.type.observeAsState()
-
-    var showDialog by remember { mutableStateOf(false) }
-    var showGame by remember { mutableStateOf(false) }
-
-    val selectedCategory by viewModel.selectedCategory.observeAsState()
-
-    val amount by viewModel.selectedAmount.observeAsState()
-
-    val triviaQuestions by viewModel.triviaQuestions.observeAsState(emptyList())
+    val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(Unit) {
         onTitleChange(title)
         viewModel.getDataCategories()
         navController.currentBackStackEntryFlow.collect { backEntry ->
             if (backEntry.destination.route == Screen.CategoryScreen.toRoute()) {
-                showGame = false
+                uiState.showGame = false
                 viewModel.resetGame()
             }
         }
     }
 
-    LaunchedEffect(triviaQuestions) {
-        if (triviaQuestions.isNotEmpty()) {
-            showGame = true
+    LaunchedEffect(uiState.triviaQuestions) {
+        if (uiState.triviaQuestions.isNotEmpty()) {
+            uiState.showGame = true
         }
     }
 
@@ -114,8 +97,8 @@ fun CategoryScreen(
             Spacer(modifier = Modifier.height(26.dp))
 
             Select(
-                items = categories.value,
-                selectedItem = selectedCategory,
+                items = uiState.categories,
+                selectedItem = uiState.selectedCategory,
                 onItemSelected = { category ->
                     viewModel.setSelectedCategory(category)
                 },
@@ -126,7 +109,7 @@ fun CategoryScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Difficulty(
-                selectedDifficulty = difficulty,
+                selectedDifficulty = uiState.selectedDifficulty,
                 onDifficultySelected = { difficulty ->
                     viewModel.setSelectedDifficulty(difficulty)
                 }
@@ -135,7 +118,7 @@ fun CategoryScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Type(
-                selectedDifficulty = type,
+                selectedDifficulty = uiState.selectedType,
                 onDifficultySelected = { type ->
                     viewModel.setSelectedType(type)
                 }
@@ -146,9 +129,9 @@ fun CategoryScreen(
             Button(
                 onClick = {
 
-                    val categoryId = Uri.encode((selectedCategory?.id ?: "").toString())
-                    val difficultyEncoded = Uri.encode(difficulty ?: "")
-                    val typeEncoded = Uri.encode(type?.let { mapTypeToApiValue(it) })
+                    val categoryId = Uri.encode((uiState.selectedCategory?.id ?: "").toString())
+                    val difficultyEncoded = Uri.encode(uiState.selectedDifficulty ?: "")
+                    val typeEncoded = Uri.encode(uiState.selectedType?.let { mapTypeToApiValue(it) })
 
                     val route =
                         "${Screen.TriviaQuestionScreen.toRoute()}/$categoryId/$difficultyEncoded/$typeEncoded"
@@ -156,7 +139,7 @@ fun CategoryScreen(
                     navController.navigate(route)
                 },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = gameFinished,
+                enabled = uiState.gameFinished,
                 colors = ButtonDefaults.buttonColors(
                     disabledContainerColor = Color.LightGray,
                     disabledContentColor = Color.DarkGray
@@ -168,7 +151,7 @@ fun CategoryScreen(
             Spacer(modifier = Modifier.height(26.dp))
 
             NumberSelector(
-                selectedNumber = amount,
+                selectedNumber = uiState.selectedAmount,
                 onNumberSelected = { viewModel.setSelectedAmount(it) }
             )
 
@@ -177,10 +160,10 @@ fun CategoryScreen(
             Button(
                 onClick = {
                     val isFormComplete = viewModel.startGame()
-                    showDialog = !isFormComplete
+                    uiState.showDialog = !isFormComplete
 
                     if (isFormComplete) {
-                        viewModel.getTrivia(amount ?: 10, selectedCategory?.id ?: 0)
+                        viewModel.getTrivia(uiState.selectedAmount ?: 10, uiState.selectedCategory?.id ?: 0)
                     }
 
                 },
@@ -188,20 +171,20 @@ fun CategoryScreen(
             ) {
                 Text(stringResource(R.string.play))
             }
-            if (showGame && triviaQuestions.isNotEmpty()) {
+            if (uiState.showGame && uiState.triviaQuestions.isNotEmpty()) {
                     TriviaGame(
-                        triviaQuestions = triviaQuestions,
+                        triviaQuestions = uiState.triviaQuestions,
                         onGameFinished = {
-                            showGame = false
+                            uiState.showGame = false
                             viewModel.setGameFinished(true)
                         }
                     )
             }
-            if (showDialog) {
+            if (uiState.showDialog) {
                 AlertGameDialog(
                     title = stringResource(R.string.atenttion),
                     message = stringResource(R.string.complete_fields),
-                    onDismiss = { showDialog = false },
+                    onDismiss = { uiState.showDialog = false },
                     confirmText = stringResource(R.string.ok)
                 )
             }

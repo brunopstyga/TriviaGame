@@ -1,27 +1,26 @@
 package com.navent.entertainmentcompse
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.navent.entertainmentcompse.Util.getOrAwaitValue
 import com.navent.entertainmentcompse.data.GameRepository
 import com.navent.entertainmentcompse.model.TriviaQuestion
 import com.navent.entertainmentcompse.ui.Resource
 import com.navent.entertainmentcompse.ui.trivia.TriviaQuestionViewModel
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.*
-import org.junit.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class TriviaQuestionViewModelTest {
-
-    /**
-     * Rule to execute LiveData updates instantly and synchronously in tests.
-     * This is required for LiveData assertions to work properly.
-     */
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     // Coroutine test dispatcher for controlling coroutine execution in unit tests
     private val testDispatcher = StandardTestDispatcher()
@@ -53,7 +52,7 @@ class TriviaQuestionViewModelTest {
      *
      * Given: A mocked successful response from the repository containing one trivia question.
      * When: getDataTriviaQuestion is called.
-     * Then: The triviaQuestions LiveData should be updated with that list and isLoading should be false.
+     * Then: The triviaQuestions UI state (StateFlow) should be updated with that list and isLoading should be false.
      */
     @Test
     fun `getDataTriviaQuestion sets triviaQuestions on success`() = runTest {
@@ -77,12 +76,12 @@ class TriviaQuestionViewModelTest {
         viewModel.getDataTriviaQuestion("9", "multiple", "easy")
 
         // Advances coroutine scheduler to execute all pending coroutines
-        testScheduler.advanceUntilIdle()
+        advanceUntilIdle()
 
-        val trivia = viewModel.triviaQuestions.getOrAwaitValue()
-        assertEquals(1, trivia.size)
-        assertEquals("What is H2O?", trivia[0].question)
-        assertEquals(false, viewModel.isLoading.value)
+        val state = viewModel.uiState.value
+        assertEquals(1, state.triviaQuestions.size)
+        assertEquals("What is H2O?", state.triviaQuestions[0].question)
+        assertEquals(false, state.isLoading)
     }
 
     /**
@@ -90,8 +89,8 @@ class TriviaQuestionViewModelTest {
      *
      * Given: A mocked error response from the repository.
      * When: getDataTriviaQuestion is called.
-     * Then: The triviaQuestions LiveData should be an empty list and isLoading should be false.
-     */
+     * Then: The triviaQuestions in the UI state (StateFlow) should be an empty list and isLoading should be false.
+    */
     @Test
     fun `getDataTriviaQuestion sets empty list on error`() = runTest {
         coEvery {
@@ -100,11 +99,11 @@ class TriviaQuestionViewModelTest {
 
         viewModel.getDataTriviaQuestion("9", "multiple", "easy")
 
-        testScheduler.advanceUntilIdle()
+        advanceUntilIdle()
 
-        val trivia = viewModel.triviaQuestions.getOrAwaitValue()
-        assertEquals(0, trivia.size)
-        assertEquals(false, viewModel.isLoading.value)
+        val state = viewModel.uiState.value
+        assertTrue(state.triviaQuestions.isEmpty())
+        assertEquals(false, state.isLoading)
     }
 }
 
