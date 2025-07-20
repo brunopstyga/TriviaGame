@@ -16,14 +16,43 @@
       <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/config.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/select/MainGameScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/select/GameScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/select/viewmodel/GameViemodel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/select/viewmodel/GameViemodel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/trivia/ScreenQuestionTrivia.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/trivia/ScreenQuestionTrivia.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/trivia/TriviaQuestionViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/trivia/TriviaQuestionViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/com/navent/entertainmentcompse/GameViewModelTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/com/navent/entertainmentcompse/GameViewModelTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/com/navent/entertainmentcompse/TriviaQuestionViewModelTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/com/navent/entertainmentcompse/TriviaQuestionViewModelTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/androidTest/java/com/navent/entertainmentcompse/ExampleInstrumentedTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/GameApp.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/MainActivity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/commons/SpinnerSelect.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/commons/TriviaGame.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/commons/TriviaQuestionDialog.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/data/GameRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/di/DispatcherModule.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/di/MainDispatcher.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/di/NetworkModule.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/model/TriviaCategory.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/navigation/Screen.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/navigation/navigation.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/service/ApiGame.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/Resource.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/select/Difficulties.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/select/GameScreen.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/select/NumberSelector.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/select/Type.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/select/viewmodel/CategoryUiState.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/select/viewmodel/GameViemodel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/theme/Color.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/theme/Theme.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/theme/Type.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/trivia/ScreenQuestionTrivia.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/trivia/TriviaQuestionUIState.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/ui/trivia/TriviaQuestionViewModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/util/alertDialog.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/navent/entertainmentcompse/util/decodeCharacter.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/com/navent/entertainmentcompse/GameViewModelTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/com/navent/entertainmentcompse/TriviaQuestionViewModelTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/com/navent/entertainmentcompse/Util/getOrAwaitValue.kt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +74,17 @@
         <task path="$PROJECT_DIR$">
           <activation />
         </task>
-        <projects_view />
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="EntertainmentCompse" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
       </state>
     </system>
   </component>
@@ -70,31 +109,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Android App.app.executor&quot;: &quot;Run&quot;,
-    &quot;Compose Preview.TriviaQuestionCardPreview (1).executor&quot;: &quot;Run&quot;,
-    &quot;Compose Preview.TriviaQuestionCardPreview.executor&quot;: &quot;Run&quot;,
-    &quot;DEBUGGABLE_DEVICE&quot;: &quot;Pixel_9_API_35 [emulator-5554]&quot;,
-    &quot;DEBUGGABLE_PROCESS&quot;: &quot;com.navent.entertainmentcompse&quot;,
-    &quot;DEBUGGER_ID&quot;: &quot;Auto&quot;,
-    &quot;Gradle.GameViewModelTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.GameViewModelTest.getDataCategories sets empty list on error.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.GameViewModelTest.getTrivia sets empty list on error.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TriviaQuestionViewModelTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TriviaQuestionViewModelTest.getDataTriviaQuestion sets empty list on error.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.TriviaQuestionViewModelTest.getDataTriviaQuestion sets triviaQuestions on success.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;SHOW_ALL_PROCESSES&quot;: &quot;false&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Bruno/Desktop/bruno/ComposeEntertainment&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Android App.app.executor": "Run",
+    "Compose Preview.TriviaQuestionCardPreview (1).executor": "Run",
+    "Compose Preview.TriviaQuestionCardPreview.executor": "Run",
+    "DEBUGGABLE_DEVICE": "Pixel_9_API_35 [emulator-5554]",
+    "DEBUGGABLE_PROCESS": "com.navent.entertainmentcompse",
+    "DEBUGGER_ID": "Auto",
+    "Gradle.GameViewModelTest.executor": "Run",
+    "Gradle.GameViewModelTest.getDataCategories sets empty list on error.executor": "Run",
+    "Gradle.GameViewModelTest.getTrivia sets empty list on error.executor": "Run",
+    "Gradle.TriviaQuestionViewModelTest.executor": "Run",
+    "Gradle.TriviaQuestionViewModelTest.getDataTriviaQuestion sets empty list on error.executor": "Run",
+    "Gradle.TriviaQuestionViewModelTest.getDataTriviaQuestion sets triviaQuestions on success.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "SHOW_ALL_PROCESSES": "false",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Bruno/Desktop/bruno/TriviaGame"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Bruno\Desktop\bruno\ComposeEntertainment\app\src\test\java\com\navent\entertainmentcompse\LiveDataTestUtil" />
@@ -332,12 +371,12 @@
       <map>
         <entry key="com.navent.entertainmentcompse">
           <value>
-            <CheckInfo lastCheckTimestamp="1752716856493" />
+            <CheckInfo lastCheckTimestamp="1753020014542" />
           </value>
         </entry>
         <entry key="com.navent.entertainmentcompse.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1752716856493" />
+            <CheckInfo lastCheckTimestamp="1753020014541" />
           </value>
         </entry>
       </map>

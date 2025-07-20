@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.navent.entertainmentcompse"
+    namespace = "com.bruno.entertainmentcompse"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.navent.entertainmentcompse"
+        applicationId = "com.bruno.entertainmentcompse"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
