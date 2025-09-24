@@ -1,14 +1,9 @@
 package com.bruno.entertainmentcompse.ui.trivia
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bruno.entertainmentcompse.data.GameRepository
-import com.bruno.entertainmentcompse.model.TriviaQuestion
+import com.bruno.entertainmentcompse.model.GetTriviaQuestionsUseCase
 import com.bruno.entertainmentcompse.ui.Resource
-import com.bruno.entertainmentcompse.ui.select.viewmodel.CategoryUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TriviaQuestionViewModel@Inject constructor(
-    private val gameRepository: GameRepository)  : ViewModel() {
+    private val getTriviaQuestionsUseCase: GetTriviaQuestionsUseCase)  : ViewModel() {
 
     private val _uiState = MutableStateFlow(TriviaQuestionUIState())
     val uiState: StateFlow<TriviaQuestionUIState> = _uiState.asStateFlow()
@@ -32,7 +27,7 @@ class TriviaQuestionViewModel@Inject constructor(
 
             Timber.tag("getDataTriviaQuestion").d("ENTRO POR ACA")
 
-            when (val result = gameRepository.getTriviaQuestions(category, 10, type, difficulty)) {
+            when (val result = getTriviaQuestionsUseCase(category, 10, type, difficulty)) {
                 is Resource.Success -> {
                     _uiState.update {
                         it.copy(

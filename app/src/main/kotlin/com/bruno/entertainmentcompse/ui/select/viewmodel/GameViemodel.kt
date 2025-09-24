@@ -1,16 +1,12 @@
 package com.bruno.entertainmentcompse.ui.select.viewmodel
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.bruno.entertainmentcompse.data.GameRepository
 import com.bruno.entertainmentcompse.di.MainDispatcher
 import com.bruno.entertainmentcompse.model.Category
-import com.bruno.entertainmentcompse.model.TriviaQuestion
-import com.bruno.entertainmentcompse.model.TriviaResponse
+import com.bruno.entertainmentcompse.model.GetCategoriesUseCase
+import com.bruno.entertainmentcompse.model.GetDataUseCase
 import com.bruno.entertainmentcompse.ui.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,12 +14,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
-    private val gameRepository: GameRepository,
+    private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getDataUseCase: GetDataUseCase,
     @MainDispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
@@ -75,7 +71,7 @@ class GameViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             _uiState.update { it.copy(isLoading = true) }
 
-            when (val result = gameRepository.getCategories()) {
+            when (val result = getCategoriesUseCase()) {
                 is Resource.Success -> {
                     val categories = result.data?.triviaCategory ?: emptyList()
                     _uiState.update {
@@ -99,7 +95,7 @@ class GameViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             _uiState.update { it.copy(isLoading = true) }
 
-            when (val result = gameRepository.getData(amount.toString(), categoryId)) {
+            when (val result = getDataUseCase(amount.toString(), categoryId)) {
                 is Resource.Success -> {
                     _uiState.update {
                         it.copy(triviaQuestions = result.data ?: emptyList())
