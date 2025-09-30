@@ -4,6 +4,8 @@ import android.os.Looper
 import com.bruno.entertainmentcompse.data.GameRepository
 import com.bruno.entertainmentcompse.model.Category
 import com.bruno.entertainmentcompse.model.CategoryTrivia
+import com.bruno.entertainmentcompse.model.GetCategoriesUseCase
+import com.bruno.entertainmentcompse.model.GetDataUseCase
 import com.bruno.entertainmentcompse.model.TriviaQuestion
 import com.bruno.entertainmentcompse.ui.Resource
 import com.bruno.entertainmentcompse.ui.select.viewmodel.GameViewModel
@@ -30,14 +32,16 @@ import org.robolectric.Shadows.shadowOf
 class GameViewModelTest {
 
     private lateinit var viewModel: GameViewModel
-    private lateinit var gameRepository: GameRepository
+    private lateinit var getCategoriesUseCase: GetCategoriesUseCase
+    private lateinit var getDataUseCase: GetDataUseCase
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        gameRepository = mockk(relaxed = true)
-        viewModel = GameViewModel(gameRepository, testDispatcher)
+        getCategoriesUseCase = mockk(relaxed = true)
+        getDataUseCase = mockk(relaxed = true)
+        viewModel = GameViewModel(getCategoriesUseCase, getDataUseCase, testDispatcher)
     }
 
     @After
@@ -91,7 +95,7 @@ class GameViewModelTest {
             )
         )
 
-        coEvery { gameRepository.getData("10", 9) } returns Resource.Success(mockQuestions)
+        coEvery { getDataUseCase("10", 9) } returns Resource.Success(mockQuestions)
 
         viewModel.getTrivia(10, 9)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -110,7 +114,7 @@ class GameViewModelTest {
      */
     @Test
     fun `getTrivia sets empty list on error`() = runTest {
-        coEvery { gameRepository.getData("10", 9) } returns Resource.Error("Some error")
+        coEvery { getDataUseCase("10", 9) } returns Resource.Error("Some error")
 
         viewModel.getTrivia(10, 9)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -177,7 +181,7 @@ class GameViewModelTest {
         val mockCategoryList = listOf(Category(9, "General"), Category(10, "Books"))
         val mockCategoryTrivia = CategoryTrivia(triviaCategory = mockCategoryList)
 
-        coEvery { gameRepository.getCategories() } returns Resource.Success(mockCategoryTrivia)
+        coEvery { getDataUseCase("10", 9) } returns Resource.Error("Some error")
 
         viewModel.getDataCategories()
         testDispatcher.scheduler.advanceUntilIdle()
@@ -197,7 +201,7 @@ class GameViewModelTest {
      */
     @Test
     fun `getDataCategories sets empty list on error`() = runTest {
-        coEvery { gameRepository.getCategories() } returns Resource.Error("Failed")
+        coEvery { getCategoriesUseCase() } returns Resource.Error("Failed")
 
         viewModel.getDataCategories()
         testDispatcher.scheduler.advanceUntilIdle()

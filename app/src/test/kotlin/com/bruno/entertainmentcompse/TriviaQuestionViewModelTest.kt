@@ -1,6 +1,7 @@
 package com.bruno.entertainmentcompse
 
 import com.bruno.entertainmentcompse.data.GameRepository
+import com.bruno.entertainmentcompse.model.GetTriviaQuestionsUseCase
 import com.bruno.entertainmentcompse.model.TriviaQuestion
 import com.bruno.entertainmentcompse.ui.Resource
 import com.bruno.entertainmentcompse.ui.trivia.TriviaQuestionViewModel
@@ -25,7 +26,8 @@ class TriviaQuestionViewModelTest {
     // Coroutine test dispatcher for controlling coroutine execution in unit tests
     private val testDispatcher = StandardTestDispatcher()
 
-    private lateinit var repository: GameRepository
+
+    private lateinit var getTriviaQuestionsUseCase: GetTriviaQuestionsUseCase
     private lateinit var viewModel: TriviaQuestionViewModel
 
     /**
@@ -35,8 +37,8 @@ class TriviaQuestionViewModelTest {
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        repository = mockk()
-        viewModel = TriviaQuestionViewModel(repository)
+        getTriviaQuestionsUseCase = mockk(relaxed = true)
+        viewModel = TriviaQuestionViewModel(getTriviaQuestionsUseCase)
     }
 
     /**
@@ -70,7 +72,7 @@ class TriviaQuestionViewModelTest {
         )
 
         coEvery {
-            repository.getTriviaQuestions("9", 10, "multiple", "easy")
+            getTriviaQuestionsUseCase("9", 10, "multiple", "easy")
         } returns Resource.Success(mockQuestions)
 
         viewModel.getDataTriviaQuestion("9", "multiple", "easy")
@@ -94,7 +96,7 @@ class TriviaQuestionViewModelTest {
     @Test
     fun `getDataTriviaQuestion sets empty list on error`() = runTest {
         coEvery {
-            repository.getTriviaQuestions(any(), any(), any(), any())
+            getTriviaQuestionsUseCase(any(), any(), any(), any())
         } returns Resource.Error("error")
 
         viewModel.getDataTriviaQuestion("9", "multiple", "easy")
