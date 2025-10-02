@@ -45,7 +45,8 @@ import com.bruno.entertainmentcompse.util.AlertGameDialog
 fun CategoryScreen(
     viewModel: GameViewModel = hiltViewModel(),
     navController: NavHostController,
-    onTitleChange: (String) -> Unit
+    onTitleChange: (String) -> Unit,
+    onShowBackButton: (Boolean) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -56,6 +57,7 @@ fun CategoryScreen(
 
     LaunchedEffect(Unit) {
         onTitleChange(title)
+        onShowBackButton(false)
         viewModel.getDataCategories()
         navController.currentBackStackEntryFlow.collect { backEntry ->
             if (backEntry.destination.route == Screen.CategoryScreen.toRoute()) {

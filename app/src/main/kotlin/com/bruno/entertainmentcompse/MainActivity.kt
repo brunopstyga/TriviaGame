@@ -20,6 +20,7 @@
     import androidx.compose.runtime.remember
     import androidx.compose.ui.Modifier
     import androidx.compose.ui.graphics.Color
+    import androidx.compose.ui.res.stringResource
     import androidx.navigation.compose.currentBackStackEntryAsState
     import androidx.navigation.compose.rememberNavController
     import com.bruno.entertainmentcompse.navigation.NavigationGraph
@@ -37,18 +38,19 @@
                 EntertainmentCompseTheme {
 
                     val navController = rememberNavController()
-                    val navBackStackEntry by navController.currentBackStackEntryAsState()
-                    val currentRoute = navBackStackEntry?.destination?.route
                     val title = remember { mutableStateOf("Inicio") }
+                    val showBackButton = remember { mutableStateOf(false) }
 
                     Scaffold(
                         topBar = {
                             TopAppBar(
                                 title = { Text(title.value) },
                                 navigationIcon = {
-                                    if (currentRoute?.startsWith("trivia_question_screen") == true) {
+                                    if (showBackButton.value) {
                                         IconButton(onClick = { navController.popBackStack() }) {
-                                            Icon(Icons.Default.ArrowBack, contentDescription = "Volver",
+                                            Icon(Icons.Default.ArrowBack, contentDescription = stringResource(
+                                                R.string.back
+                                            ),
                                                 tint = Color.White)
                                         }
                                     }
@@ -64,7 +66,7 @@
                             modifier = Modifier.padding(padding),
                             navController = navController,
                             onTitleChange = { title.value = it },
-                            onNavigateUp = { navController.popBackStack() }
+                            onShowBackButton = { showBackButton.value = it }
                         )
                     }
                 }

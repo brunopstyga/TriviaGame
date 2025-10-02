@@ -17,7 +17,7 @@ fun NavigationGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     onTitleChange: (String) -> Unit,
-    onNavigateUp: () -> Unit
+    onShowBackButton: (Boolean) -> Unit
 ) {
     NavHost(
         modifier = modifier,
@@ -28,7 +28,8 @@ fun NavigationGraph(
         composable(Screen.CategoryScreen.toRoute()) {
             CategoryScreen(
                 navController = navController,
-                onTitleChange = onTitleChange
+                onTitleChange = onTitleChange,
+                onShowBackButton = onShowBackButton
             )
         }
         composable(
@@ -47,7 +48,7 @@ fun NavigationGraph(
                 difficulty = difficulty,
                 type = type,
                 onTitleChange = onTitleChange,
-                onNavigateUp = onNavigateUp,
+                onShowBackButton = onShowBackButton,
             )
         }
     }

@@ -19,4 +19,5 @@
     <string name="atenttion">Atención</string>
     <string name="well_done">Well done! That is the correct answer</string>
     <string name="accept">accept</string>
+    <string name="back">Volver</string>
 </resources>

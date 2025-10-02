@@ -30,8 +30,7 @@ fun TriviaQuestionScreen(category: String,
                          difficulty: String,
                          viewModel: TriviaQuestionViewModel = hiltViewModel(),
                          onTitleChange: (String) -> Unit,
-                         @Suppress("UNUSED_PARAMETER")
-                         onNavigateUp: () -> Unit) {
+                         onShowBackButton: (Boolean) -> Unit) {
 
     val state by viewModel.uiState.collectAsState()
 
@@ -40,6 +39,7 @@ fun TriviaQuestionScreen(category: String,
 
     LaunchedEffect(Unit) {
         onTitleChange(title)
+        onShowBackButton(true)
         viewModel.getDataTriviaQuestion(category = category, type = type,difficulty = difficulty)
     }
 
