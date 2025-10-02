@@ -1,6 +1,7 @@
 package com.bruno.entertainmentcompse.ui.select.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bruno.entertainmentcompse.BaseViewModel
 import com.bruno.entertainmentcompse.di.MainDispatcher
 import com.bruno.entertainmentcompse.model.Category
 import com.bruno.entertainmentcompse.model.GetCategoriesUseCase
@@ -14,14 +15,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
     private val getCategoriesUseCase: GetCategoriesUseCase,
-    private val getDataUseCase: GetDataUseCase,
-    @MainDispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.Main
-) : ViewModel() {
+    private val getDataUseCase: GetDataUseCase
+) : BaseViewModel(){
 
     private val _uiState = MutableStateFlow(CategoryUiState())
     val uiState: StateFlow<CategoryUiState> = _uiState.asStateFlow()
@@ -68,8 +69,8 @@ class GameViewModel @Inject constructor(
     }
 
     fun getDataCategories() {
-        viewModelScope.launch(dispatcher) {
-            _uiState.update { it.copy(isLoading = true) }
+        launchSafe(dispatcher = Dispatchers.IO) {
+            _uiState.update { it.copy(isLoading = true, error = null) }
 
             when (val result = getCategoriesUseCase()) {
                 is Resource.Success -> {
@@ -82,7 +83,7 @@ class GameViewModel @Inject constructor(
                     }
                 }
                 is Resource.Error -> {
-                    _uiState.update { it.copy(categories = emptyList()) }
+                    _uiState.update { it.copy(categories = emptyList(), error = result.message) }
                 }
                 else -> {}
             }
@@ -92,23 +93,25 @@ class GameViewModel @Inject constructor(
     }
 
     fun getTrivia(amount: Int, categoryId: Int) {
-        viewModelScope.launch(dispatcher) {
-            _uiState.update { it.copy(isLoading = true) }
+        launchSafe(dispatcher = Dispatchers.IO) {
+            _uiState.update { it.copy(isLoading = true, error = null) }
 
             when (val result = getDataUseCase(amount.toString(), categoryId)) {
-                is Resource.Success -> {
-                    _uiState.update {
-                        it.copy(triviaQuestions = result.data ?: emptyList())
-                    }
-                }
-                is Resource.Error -> {
-                    _uiState.update { it.copy(triviaQuestions = emptyList()) }
-                }
+                is Resource.Success -> _uiState.update { it.copy(triviaQuestions = result.data ?: emptyList()) }
+                is Resource.Error -> _uiState.update { it.copy(triviaQuestions = emptyList(), error = result.message) }
                 else -> {}
             }
 
             _uiState.update { it.copy(isLoading = false) }
         }
+    }
+
+    override fun onError(exception: Throwable) {
+        _uiState.update { it.copy(isLoading = false, error = exception.message ?: "Unexpected error") }
+    }
+
+    fun setShowGame(show: Boolean) {
+        _uiState.update { it.copy(showGame = show) }
     }
 
     fun getSelectedCategoryName(): String {

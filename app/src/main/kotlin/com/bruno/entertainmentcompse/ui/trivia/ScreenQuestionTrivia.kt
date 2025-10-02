@@ -29,7 +29,9 @@ fun TriviaQuestionScreen(category: String,
                          type: String,
                          difficulty: String,
                          viewModel: TriviaQuestionViewModel = hiltViewModel(),
-                         onTitleChange: (String) -> Unit) {
+                         onTitleChange: (String) -> Unit,
+                         @Suppress("UNUSED_PARAMETER")
+                         onNavigateUp: () -> Unit) {
 
     val state by viewModel.uiState.collectAsState()
 

@@ -13,6 +13,7 @@ data class CategoryUiState(
     val selectedCategory: Category? = null,
     val gameFinished: Boolean = false,
     var showDialog: Boolean = false,
-    var showGame: Boolean = false
+    var showGame: Boolean = false,
+    val error: String? = null
 )
 

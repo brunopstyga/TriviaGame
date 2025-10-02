@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.bruno.entertainmentcompse.ui.TriviaDestination
 import com.bruno.entertainmentcompse.ui.select.CategoryScreen
 import com.bruno.entertainmentcompse.ui.trivia.TriviaQuestionScreen
 
@@ -15,7 +16,8 @@ import com.bruno.entertainmentcompse.ui.trivia.TriviaQuestionScreen
 fun NavigationGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    onTitleChange: (String) -> Unit
+    onTitleChange: (String) -> Unit,
+    onNavigateUp: () -> Unit
 ) {
     NavHost(
         modifier = modifier,
@@ -30,7 +32,7 @@ fun NavigationGraph(
             )
         }
         composable(
-            route = "${Screen.TriviaQuestionScreen.toRoute()}/{categoryId}/{difficulty}/{type}",
+            route = TriviaDestination.TriviaQuestion.route,
             arguments = listOf(
                 navArgument("categoryId") { type = NavType.StringType },
                 navArgument("difficulty") { type = NavType.StringType },
@@ -44,7 +46,8 @@ fun NavigationGraph(
                 category = category,
                 difficulty = difficulty,
                 type = type,
-                onTitleChange = onTitleChange
+                onTitleChange = onTitleChange,
+                onNavigateUp = onNavigateUp,
             )
         }
     }

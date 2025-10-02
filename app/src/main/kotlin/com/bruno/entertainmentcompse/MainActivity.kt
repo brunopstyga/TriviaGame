@@ -63,7 +63,8 @@
                         NavigationGraph(
                             modifier = Modifier.padding(padding),
                             navController = navController,
-                            onTitleChange = { title.value = it }
+                            onTitleChange = { title.value = it },
+                            onNavigateUp = { navController.popBackStack() }
                         )
                     }
                 }
