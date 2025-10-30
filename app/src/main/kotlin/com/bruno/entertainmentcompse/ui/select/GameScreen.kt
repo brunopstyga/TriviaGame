@@ -1,7 +1,6 @@
 package com.bruno.entertainmentcompse.ui.select
 
 
-import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -104,7 +103,7 @@ fun CategoryScreen(
                 items = uiState.categories,
                 selectedItem = uiState.selectedCategory,
                 onItemSelected = { category ->
-                    viewModel.setSelectedCategory(category)
+                   viewModel.updateState { copy(selectedCategory = category) }
                 },
                 itemToString = { it.name ?: "Sin nombre" },
                 placeholder = stringResource(R.string.select_category)
@@ -115,7 +114,7 @@ fun CategoryScreen(
             Difficulty(
                 selectedDifficulty = uiState.selectedDifficulty,
                 onDifficultySelected = { difficulty ->
-                    viewModel.setSelectedDifficulty(difficulty)
+                    viewModel.updateState { copy(selectedDifficulty = difficulty) }
                 }
             )
 
@@ -124,7 +123,7 @@ fun CategoryScreen(
             Type(
                 selectedDifficulty = uiState.selectedType,
                 onDifficultySelected = { type ->
-                    viewModel.setSelectedType(type)
+                    viewModel.updateState { copy(selectedType = type) }
                 }
             )
 
@@ -145,7 +144,7 @@ fun CategoryScreen(
 
             NumberSelector(
                 selectedNumber = uiState.selectedAmount,
-                onNumberSelected = { viewModel.setSelectedAmount(it) }
+                onNumberSelected = { viewModel.updateState { copy(selectedAmount = it) } }
             )
 
             Spacer(modifier = Modifier.height(16.dp))

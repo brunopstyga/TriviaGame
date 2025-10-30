@@ -1,8 +1,6 @@
 package com.bruno.entertainmentcompse.ui.select.viewmodel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.bruno.entertainmentcompse.BaseViewModel
-import com.bruno.entertainmentcompse.di.MainDispatcher
+import com.bruno.entertainmentcompse.di.IoDispatcher
 import com.bruno.entertainmentcompse.model.Category
 import com.bruno.entertainmentcompse.model.GetCategoriesUseCase
 import com.bruno.entertainmentcompse.model.GetDataUseCase
@@ -14,35 +12,21 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
     private val getCategoriesUseCase: GetCategoriesUseCase,
-    private val getDataUseCase: GetDataUseCase
+    private val getDataUseCase: GetDataUseCase,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : BaseViewModel(){
 
     private val _uiState = MutableStateFlow(CategoryUiState())
     val uiState: StateFlow<CategoryUiState> = _uiState.asStateFlow()
 
-    fun setSelectedCategory(category: Category) {
-        _uiState.update { it.copy(selectedCategory = category) }
+    fun updateState(update: CategoryUiState.() -> CategoryUiState) {
+        _uiState.update { it.update() }
     }
-
-    fun setSelectedDifficulty(difficulty: String) {
-        _uiState.update { it.copy(selectedDifficulty = difficulty) }
-    }
-
-    fun setSelectedType(type: String) {
-        _uiState.update { it.copy(selectedType = type) }
-    }
-
-    fun setSelectedAmount(amount: Int) {
-        _uiState.update { it.copy(selectedAmount = amount) }
-    }
-
 
     fun setGameFinished(finished: Boolean) {
         _uiState.update { it.copy(gameFinished = finished) }
@@ -69,7 +53,7 @@ class GameViewModel @Inject constructor(
     }
 
     fun getDataCategories() {
-        launchSafe(dispatcher = Dispatchers.IO) {
+        launchSafe(dispatcher = dispatcher) {
             _uiState.update { it.copy(isLoading = true, error = null) }
 
             when (val result = getCategoriesUseCase()) {

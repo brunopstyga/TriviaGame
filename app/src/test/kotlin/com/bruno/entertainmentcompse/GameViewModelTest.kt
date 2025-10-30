@@ -57,8 +57,9 @@ class GameViewModelTest {
      */
     @Test
     fun `startGame returns false when category is not selected`() {
-        viewModel.setSelectedDifficulty("easy")
-        viewModel.setSelectedAmount(10)
+        viewModel.updateState { copy(selectedAmount = 10) }
+        viewModel.updateState { copy(selectedDifficulty = "easy") }
+
 
         val result = viewModel.startGame()
         assertFalse(result)
@@ -134,8 +135,9 @@ class GameViewModelTest {
      */
     @Test
     fun `startGame returns false when difficulty is not selected`() {
-        viewModel.setSelectedCategory(Category(9, "General Knowledge"))
-        viewModel.setSelectedAmount(10)
+        val category = Category(9, "General Knowledge")
+        viewModel.updateState { copy(selectedCategory = category) }
+        viewModel.updateState { copy(selectedAmount = 10) }
 
         val result = viewModel.startGame()
         assertFalse(result)
@@ -148,9 +150,10 @@ class GameViewModelTest {
      */
     @Test
     fun `startGame returns false when amount is zero`() {
-        viewModel.setSelectedCategory(Category(9, "General Knowledge"))
-        viewModel.setSelectedDifficulty("easy")
-        viewModel.setSelectedAmount(0)
+        val category = Category(9, "General Knowledge")
+        viewModel.updateState { copy(selectedCategory = category) }
+        viewModel.updateState { copy(selectedAmount = 0) }
+        viewModel.updateState { copy(selectedDifficulty = "easy") }
 
         val result = viewModel.startGame()
         assertFalse(result)
@@ -163,9 +166,10 @@ class GameViewModelTest {
      */
     @Test
     fun `startGame returns true when all fields are set correctly`() {
-        viewModel.setSelectedCategory(Category(9, "General Knowledge"))
-        viewModel.setSelectedDifficulty("easy")
-        viewModel.setSelectedAmount(10)
+        val category = Category(9, "General Knowledge")
+        viewModel.updateState { copy(selectedDifficulty = "easy") }
+        viewModel.updateState { copy(selectedCategory = category) }
+        viewModel.updateState { copy(selectedAmount = 10) }
 
         val result = viewModel.startGame()
         assertTrue(result)
@@ -178,20 +182,30 @@ class GameViewModelTest {
      */
     @Test
     fun `getDataCategories updates gameCategories on success`() = runTest {
-        val mockCategoryList = listOf(Category(9, "General"), Category(10, "Books"))
-        val mockCategoryTrivia = CategoryTrivia(triviaCategory = mockCategoryList)
 
-        coEvery { getDataUseCase("10", 9) } returns Resource.Error("Some error")
+        val mockCategories = listOf(
+            Category(9, "General"),
+            Category(10, "Books")
+        )
+
+        val mockResponse = CategoryTrivia(triviaCategory = mockCategories)
+
+        coEvery { getCategoriesUseCase() } returns Resource.Success(mockResponse)
 
         viewModel.getDataCategories()
+
+
         testDispatcher.scheduler.advanceUntilIdle()
+
         shadowOf(Looper.getMainLooper()).idle()
 
         val state = viewModel.uiState.value
         val result = state.categories
+
         assertEquals(2, result.size)
         assertEquals("General", result[0].name)
     }
+
 
     /**
      * Test that getDataCategories sets an empty list in gameCategories on error.
