@@ -28,14 +28,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.bruno.entertainmentcompse.R
 import com.bruno.entertainmentcompse.commons.Select
 import com.bruno.entertainmentcompse.commons.TriviaGame
 import com.bruno.entertainmentcompse.model.Category
 import com.bruno.entertainmentcompse.navigation.NavigatorHelper
-import com.bruno.entertainmentcompse.navigation.Screen
-import com.bruno.entertainmentcompse.navigation.toRoute
 import com.bruno.entertainmentcompse.ui.select.viewmodel.GameViewModel
 import com.bruno.entertainmentcompse.util.AlertGameDialog
 
@@ -43,14 +40,13 @@ import com.bruno.entertainmentcompse.util.AlertGameDialog
 @Composable
 fun CategoryScreen(
     viewModel: GameViewModel = hiltViewModel(),
-    navController: NavHostController,
+    navigatorHelper: NavigatorHelper,
     onTitleChange: (String) -> Unit,
     onShowBackButton: (Boolean) -> Unit
 ) {
 
     val context = LocalContext.current
     val title = context.getString(R.string.screen_title)
-    val navigator = remember { NavigatorHelper(navController, context) }
 
     val uiState by viewModel.uiState.collectAsState()
 
@@ -58,12 +54,8 @@ fun CategoryScreen(
         onTitleChange(title)
         onShowBackButton(false)
         viewModel.getDataCategories()
-        navController.currentBackStackEntryFlow.collect { backEntry ->
-            if (backEntry.destination.route == Screen.CategoryScreen.toRoute()) {
                 viewModel.setShowGame(false)
                 viewModel.resetGame()
-            }
-        }
     }
 
     LaunchedEffect(uiState.triviaQuestions) {
@@ -129,7 +121,7 @@ fun CategoryScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
             Button(
-                onClick = { navigator.goToTrivia(uiState) },
+                onClick = { navigatorHelper.goToTrivia(uiState) },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = uiState.gameFinished,
                 colors = ButtonDefaults.buttonColors(

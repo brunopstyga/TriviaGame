@@ -8,16 +8,8 @@ import com.bruno.entertainmentcompse.ui.select.viewmodel.CategoryUiState
 import timber.log.Timber
 
 class NavigatorHelper(
-    private val navController: NavController,
-    private val context: Context
+    private val navController: NavController
 ) {
-    fun navigateTo(route: String) {
-        try {
-            navController.navigate(route)
-        } catch (e: Exception) {
-            showError("Error al navegar: ${e.message}")
-        }
-    }
 
     fun goToTrivia(uiState: CategoryUiState) {
         val categoryId = uiState.selectedCategory?.id?.toString()
@@ -29,8 +21,14 @@ class NavigatorHelper(
             return
         }
 
-        val route = TriviaDestination.TriviaQuestion.createRoute(categoryId, difficulty, type)
-        navigateTo(route)
+        navController.navigate(
+            Screen.TriviaQuestion(
+                categoryId = categoryId,
+                difficulty = difficulty,
+                type = type
+            )
+        )
+
     }
 
     private fun showError(message: String) {

@@ -77,6 +77,8 @@ dependencies {
     implementation(libs.serialization.json)
     implementation(libs.hilt.android)
     implementation(libs.hilt.compose)
+    implementation(libs.navigation.ui)
+    implementation(libs.navigation.fragment)
     implementation(libs.androidx.lifecycle.runtime.compose.android)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)

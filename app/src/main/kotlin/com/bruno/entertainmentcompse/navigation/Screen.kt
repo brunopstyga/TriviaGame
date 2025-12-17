@@ -3,22 +3,19 @@ package com.bruno.entertainmentcompse.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class Screen {
-    @Serializable
-    data object GameScreen : Screen()
+sealed interface Screen {
 
     @Serializable
-    data object CategoryScreen : Screen()
-
+    data object GameScreen : Screen
 
     @Serializable
-    data object TriviaQuestionScreen : Screen()
+    data object CategoryScreen : Screen
+
+    @Serializable
+    data class TriviaQuestion(
+        val categoryId: String,
+        val difficulty: String,
+        val type: String
+    ) : Screen
 }
 
-fun Screen.toRoute(): String {
-    return when (this) {
-        is Screen.GameScreen -> "game_screen"
-        is Screen.CategoryScreen -> "category_screen"
-        is Screen.TriviaQuestionScreen -> "trivia_question_screen"
-    }
-}

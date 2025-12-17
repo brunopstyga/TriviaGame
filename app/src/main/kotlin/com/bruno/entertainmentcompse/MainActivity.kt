@@ -6,6 +6,7 @@
     import androidx.activity.enableEdgeToEdge
     import androidx.compose.foundation.layout.padding
     import androidx.compose.material.icons.Icons
+    import androidx.compose.material.icons.automirrored.filled.ArrowBack
     import androidx.compose.material.icons.filled.ArrowBack
     import androidx.compose.material3.ExperimentalMaterial3Api
     import androidx.compose.material3.Icon
@@ -15,15 +16,14 @@
     import androidx.compose.material3.Text
     import androidx.compose.material3.TopAppBar
     import androidx.compose.material3.TopAppBarDefaults
-    import androidx.compose.runtime.getValue
     import androidx.compose.runtime.mutableStateOf
     import androidx.compose.runtime.remember
     import androidx.compose.ui.Modifier
     import androidx.compose.ui.graphics.Color
     import androidx.compose.ui.res.stringResource
-    import androidx.navigation.compose.currentBackStackEntryAsState
     import androidx.navigation.compose.rememberNavController
     import com.bruno.entertainmentcompse.navigation.NavigationGraph
+    import com.bruno.entertainmentcompse.navigation.NavigatorHelper
     import com.bruno.entertainmentcompse.ui.theme.EntertainmentCompseTheme
     import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,6 +38,7 @@
                 EntertainmentCompseTheme {
 
                     val navController = rememberNavController()
+                    val navigator = remember { NavigatorHelper(navController) }
                     val title = remember { mutableStateOf("Inicio") }
                     val showBackButton = remember { mutableStateOf(false) }
 
@@ -48,7 +49,8 @@
                                 navigationIcon = {
                                     if (showBackButton.value) {
                                         IconButton(onClick = { navController.popBackStack() }) {
-                                            Icon(Icons.Default.ArrowBack, contentDescription = stringResource(
+                                            Icon(
+                                                Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(
                                                 R.string.back
                                             ),
                                                 tint = Color.White)
@@ -65,6 +67,7 @@
                         NavigationGraph(
                             modifier = Modifier.padding(padding),
                             navController = navController,
+                            navigator = navigator,
                             onTitleChange = { title.value = it },
                             onShowBackButton = { showBackButton.value = it }
                         )
