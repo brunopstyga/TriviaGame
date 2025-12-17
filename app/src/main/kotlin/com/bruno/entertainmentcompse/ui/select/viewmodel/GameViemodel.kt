@@ -28,10 +28,6 @@ class GameViewModel @Inject constructor(
         _uiState.update { it.update() }
     }
 
-    fun setGameFinished(finished: Boolean) {
-        _uiState.update { it.copy(gameFinished = finished) }
-    }
-
     fun startGame(): Boolean {
         val state = _uiState.value
         return state.selectedCategory != null &&
@@ -81,8 +77,24 @@ class GameViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true, error = null) }
 
             when (val result = getDataUseCase(amount.toString(), categoryId)) {
-                is Resource.Success -> _uiState.update { it.copy(triviaQuestions = result.data ?: emptyList()) }
-                is Resource.Error -> _uiState.update { it.copy(triviaQuestions = emptyList(), error = result.message) }
+                is Resource.Success -> {
+                    val questions = result.data ?: emptyList()
+
+                    _uiState.update {
+                        it.copy(
+                            triviaQuestions = questions,
+                            showGame = questions.isNotEmpty(),
+                            gameFinished = false
+                        )
+                    }
+                }
+
+                is Resource.Error -> _uiState.update {
+                    it.copy(
+                        triviaQuestions = emptyList(),
+                        showGame = false,
+                        error = result.message
+                    ) }
                 else -> {}
             }
 
@@ -90,15 +102,41 @@ class GameViewModel @Inject constructor(
         }
     }
 
+    fun onPlayClicked() {
+        val isValid = startGame()
+
+        if (!isValid) {
+            updateState { copy(showDialog = true) }
+            return
+        }
+
+        val state = uiState.value
+        getTrivia(
+            amount = state.selectedAmount ?: 10,
+            categoryId = state.selectedCategory?.id ?: 0
+        )
+    }
+
+    fun onCategoryScreenEntered() {
+        getDataCategories()
+    }
+
     override fun onError(exception: Throwable) {
         _uiState.update { it.copy(isLoading = false, error = exception.message ?: "Unexpected error") }
     }
 
-    fun setShowGame(show: Boolean) {
-        _uiState.update { it.copy(showGame = show) }
+    fun onGameFinished() {
+        updateState {
+            copy(
+                showGame = false,
+                gameFinished = true
+            )
+        }
     }
 
-    fun getSelectedCategoryName(): String {
-        return _uiState.value.selectedCategory?.name ?: "Sin nombre"
+    fun dismissDialog() {
+        updateState { copy(showDialog = false) }
     }
+
+
 }

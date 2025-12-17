@@ -53,15 +53,7 @@ fun CategoryScreen(
     LaunchedEffect(Unit) {
         onTitleChange(title)
         onShowBackButton(false)
-        viewModel.getDataCategories()
-                viewModel.setShowGame(false)
-                viewModel.resetGame()
-    }
-
-    LaunchedEffect(uiState.triviaQuestions) {
-        if (uiState.triviaQuestions.isNotEmpty()) {
-            viewModel.setShowGame(true)
-        }
+        viewModel.onCategoryScreenEntered()
     }
 
     Scaffold(
@@ -142,33 +134,22 @@ fun CategoryScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = {
-                    val isFormComplete = viewModel.startGame()
-                    uiState.showDialog = !isFormComplete
-
-                    if (isFormComplete) {
-                        viewModel.getTrivia(uiState.selectedAmount ?: 10, uiState.selectedCategory?.id ?: 0)
-                    }
-
-                },
+                onClick = { viewModel.onPlayClicked() },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(stringResource(R.string.play))
             }
             if (uiState.showGame && uiState.triviaQuestions.isNotEmpty()) {
-                    TriviaGame(
-                        triviaQuestions = uiState.triviaQuestions,
-                        onGameFinished = {
-                            viewModel.setShowGame(false)
-                            viewModel.setGameFinished(true)
-                        }
-                    )
+                TriviaGame(
+                    triviaQuestions = uiState.triviaQuestions,
+                    onGameFinished = viewModel::onGameFinished
+                )
             }
             if (uiState.showDialog) {
                 AlertGameDialog(
                     title = stringResource(R.string.atenttion),
                     message = stringResource(R.string.complete_fields),
-                    onDismiss = { uiState.showDialog = false },
+                    onDismiss = {viewModel.dismissDialog()},
                     confirmText = stringResource(R.string.ok)
                 )
             }
