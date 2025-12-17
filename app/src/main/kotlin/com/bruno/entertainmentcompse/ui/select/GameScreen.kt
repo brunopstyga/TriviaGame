@@ -29,10 +29,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bruno.entertainmentcompse.R
-import com.bruno.entertainmentcompse.commons.Select
-import com.bruno.entertainmentcompse.commons.TriviaGame
-import com.bruno.entertainmentcompse.model.Category
-import com.bruno.entertainmentcompse.navigation.NavigatorHelper
+import com.bruno.entertainmentcompse.ui.commons.Select
+import com.bruno.entertainmentcompse.ui.commons.TriviaGame
+import com.bruno.entertainmentcompse.data.remote.Category
+import com.bruno.entertainmentcompse.ui.navigation.NavigatorHelper
 import com.bruno.entertainmentcompse.ui.select.viewmodel.GameViewModel
 import com.bruno.entertainmentcompse.util.AlertGameDialog
 

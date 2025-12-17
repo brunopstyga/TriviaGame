@@ -1,8 +1,7 @@
 package com.bruno.entertainmentcompse
 
-import com.bruno.entertainmentcompse.data.GameRepository
-import com.bruno.entertainmentcompse.model.GetTriviaQuestionsUseCase
-import com.bruno.entertainmentcompse.model.TriviaQuestion
+import com.bruno.entertainmentcompse.domain.usecase.GetTriviaQuestionsUseCase
+import com.bruno.entertainmentcompse.data.remote.TriviaQuestion
 import com.bruno.entertainmentcompse.ui.Resource
 import com.bruno.entertainmentcompse.ui.trivia.TriviaQuestionViewModel
 import io.mockk.coEvery

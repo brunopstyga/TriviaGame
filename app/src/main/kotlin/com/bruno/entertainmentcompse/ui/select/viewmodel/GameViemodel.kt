@@ -1,9 +1,8 @@
 package com.bruno.entertainmentcompse.ui.select.viewmodel
 import com.bruno.entertainmentcompse.BaseViewModel
 import com.bruno.entertainmentcompse.di.IoDispatcher
-import com.bruno.entertainmentcompse.model.Category
-import com.bruno.entertainmentcompse.model.GetCategoriesUseCase
-import com.bruno.entertainmentcompse.model.GetDataUseCase
+import com.bruno.entertainmentcompse.domain.usecase.GetCategoriesUseCase
+import com.bruno.entertainmentcompse.domain.usecase.GetDataUseCase
 import com.bruno.entertainmentcompse.ui.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher

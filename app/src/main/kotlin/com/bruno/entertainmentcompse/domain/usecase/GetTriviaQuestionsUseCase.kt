@@ -1,11 +1,12 @@
-package com.bruno.entertainmentcompse.model
+package com.bruno.entertainmentcompse.domain.usecase
 
-import com.bruno.entertainmentcompse.data.GameRepository
+import com.bruno.entertainmentcompse.data.remote.TriviaQuestion
+import com.bruno.entertainmentcompse.data.repository.GameRepositoryImpl
 import com.bruno.entertainmentcompse.ui.Resource
 import javax.inject.Inject
 
 class GetTriviaQuestionsUseCase @Inject constructor(
-    private val gameRepository: GameRepository
+    private val gameRepositoryImpl: GameRepositoryImpl
 ) {
     suspend operator fun invoke(
         categoryId: String,
@@ -13,7 +14,7 @@ class GetTriviaQuestionsUseCase @Inject constructor(
         type: String,
         difficulty: String
     ): Resource<List<TriviaQuestion>> {
-        return gameRepository.getTriviaQuestions(
+        return gameRepositoryImpl.getTriviaQuestions(
             categoryId = categoryId,
             amount = amount,
             type = type,

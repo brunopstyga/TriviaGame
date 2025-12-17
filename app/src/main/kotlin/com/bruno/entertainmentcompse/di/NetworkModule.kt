@@ -1,10 +1,9 @@
 package com.bruno.entertainmentcompse.di
 
-import com.bruno.entertainmentcompse.service.ApiGame
+import com.bruno.entertainmentcompse.data.remote.ApiGame
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.internal.managers.ApplicationComponentManager
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton

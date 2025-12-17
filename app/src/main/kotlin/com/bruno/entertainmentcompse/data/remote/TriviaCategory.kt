@@ -1,4 +1,4 @@
-package com.bruno.entertainmentcompse.model
+package com.bruno.entertainmentcompse.data.remote
 import com.google.gson.annotations.SerializedName
 
 data class CategoryTrivia(

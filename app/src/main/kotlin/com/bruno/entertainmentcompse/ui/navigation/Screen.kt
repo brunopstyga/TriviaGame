@@ -1,4 +1,4 @@
-package com.bruno.entertainmentcompse.navigation
+package com.bruno.entertainmentcompse.ui.navigation
 
 import kotlinx.serialization.Serializable
 

@@ -1,10 +1,6 @@
-package com.bruno.entertainmentcompse.service
+package com.bruno.entertainmentcompse.data.remote
 
 
-import com.bruno.entertainmentcompse.model.CategoryTrivia
-import com.bruno.entertainmentcompse.model.Response
-import com.bruno.entertainmentcompse.model.TriviaQuestion
-import com.bruno.entertainmentcompse.model.TriviaResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

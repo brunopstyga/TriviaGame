@@ -1,7 +1,7 @@
 package com.bruno.entertainmentcompse.ui.trivia
 
 import com.bruno.entertainmentcompse.BaseViewModel
-import com.bruno.entertainmentcompse.model.GetTriviaQuestionsUseCase
+import com.bruno.entertainmentcompse.domain.usecase.GetTriviaQuestionsUseCase
 import com.bruno.entertainmentcompse.ui.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TriviaQuestionViewModel@Inject constructor(
-    private val getTriviaQuestionsUseCase: GetTriviaQuestionsUseCase)  : BaseViewModel() {
+    private val getTriviaQuestionsUseCase: GetTriviaQuestionsUseCase
+)  : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(TriviaQuestionUIState())
     val uiState: StateFlow<TriviaQuestionUIState> = _uiState.asStateFlow()

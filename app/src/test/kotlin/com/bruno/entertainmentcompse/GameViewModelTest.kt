@@ -1,12 +1,11 @@
 package com.bruno.entertainmentcompse
 
 import android.os.Looper
-import com.bruno.entertainmentcompse.data.GameRepository
-import com.bruno.entertainmentcompse.model.Category
-import com.bruno.entertainmentcompse.model.CategoryTrivia
-import com.bruno.entertainmentcompse.model.GetCategoriesUseCase
-import com.bruno.entertainmentcompse.model.GetDataUseCase
-import com.bruno.entertainmentcompse.model.TriviaQuestion
+import com.bruno.entertainmentcompse.data.remote.Category
+import com.bruno.entertainmentcompse.data.remote.CategoryTrivia
+import com.bruno.entertainmentcompse.domain.usecase.GetCategoriesUseCase
+import com.bruno.entertainmentcompse.domain.usecase.GetDataUseCase
+import com.bruno.entertainmentcompse.data.remote.TriviaQuestion
 import com.bruno.entertainmentcompse.ui.Resource
 import com.bruno.entertainmentcompse.ui.select.viewmodel.GameViewModel
 import io.mockk.coEvery

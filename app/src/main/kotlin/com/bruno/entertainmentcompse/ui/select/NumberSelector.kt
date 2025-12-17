@@ -3,7 +3,7 @@ package com.bruno.entertainmentcompse.ui.select
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.bruno.entertainmentcompse.R
-import com.bruno.entertainmentcompse.commons.Select
+import com.bruno.entertainmentcompse.ui.commons.Select
 
 @Composable
 fun NumberSelector(

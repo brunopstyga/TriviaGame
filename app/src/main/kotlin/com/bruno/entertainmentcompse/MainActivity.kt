@@ -7,7 +7,6 @@
     import androidx.compose.foundation.layout.padding
     import androidx.compose.material.icons.Icons
     import androidx.compose.material.icons.automirrored.filled.ArrowBack
-    import androidx.compose.material.icons.filled.ArrowBack
     import androidx.compose.material3.ExperimentalMaterial3Api
     import androidx.compose.material3.Icon
     import androidx.compose.material3.IconButton
@@ -22,8 +21,8 @@
     import androidx.compose.ui.graphics.Color
     import androidx.compose.ui.res.stringResource
     import androidx.navigation.compose.rememberNavController
-    import com.bruno.entertainmentcompse.navigation.NavigationGraph
-    import com.bruno.entertainmentcompse.navigation.NavigatorHelper
+    import com.bruno.entertainmentcompse.ui.navigation.NavigationGraph
+    import com.bruno.entertainmentcompse.ui.navigation.NavigatorHelper
     import com.bruno.entertainmentcompse.ui.theme.EntertainmentCompseTheme
     import dagger.hilt.android.AndroidEntryPoint
 

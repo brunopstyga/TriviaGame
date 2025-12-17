@@ -1,6 +1,6 @@
 package com.bruno.entertainmentcompse.ui.trivia
 
-import com.bruno.entertainmentcompse.model.TriviaQuestion
+import com.bruno.entertainmentcompse.data.remote.TriviaQuestion
 
 data class TriviaQuestionUIState(
     val triviaQuestions: List<TriviaQuestion> = emptyList(),

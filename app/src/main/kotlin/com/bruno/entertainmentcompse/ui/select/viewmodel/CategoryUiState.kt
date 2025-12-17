@@ -1,7 +1,7 @@
 package com.bruno.entertainmentcompse.ui.select.viewmodel
 
-import com.bruno.entertainmentcompse.model.Category
-import com.bruno.entertainmentcompse.model.TriviaQuestion
+import com.bruno.entertainmentcompse.data.remote.Category
+import com.bruno.entertainmentcompse.data.remote.TriviaQuestion
 
 data class CategoryUiState(
     val isLoading: Boolean = false,

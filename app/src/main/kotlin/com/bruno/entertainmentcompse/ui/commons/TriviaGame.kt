@@ -1,4 +1,4 @@
-package com.bruno.entertainmentcompse.commons
+package com.bruno.entertainmentcompse.ui.commons
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import com.bruno.entertainmentcompse.R
-import com.bruno.entertainmentcompse.model.TriviaQuestion
+import com.bruno.entertainmentcompse.data.remote.TriviaQuestion
 import com.bruno.entertainmentcompse.util.AlertGameDialog
 import com.bruno.entertainmentcompse.util.characterDecode
 

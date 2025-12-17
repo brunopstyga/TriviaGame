@@ -1,8 +1,6 @@
-package com.bruno.entertainmentcompse.navigation
+package com.bruno.entertainmentcompse.ui.navigation
 
-import android.content.Context
 import androidx.navigation.NavController
-import com.bruno.entertainmentcompse.ui.TriviaDestination
 import com.bruno.entertainmentcompse.ui.select.mapTypeToApiValue
 import com.bruno.entertainmentcompse.ui.select.viewmodel.CategoryUiState
 import timber.log.Timber
