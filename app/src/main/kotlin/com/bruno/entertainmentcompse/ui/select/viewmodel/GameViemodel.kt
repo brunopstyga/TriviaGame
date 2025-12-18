@@ -137,5 +137,34 @@ class GameViewModel @Inject constructor(
         updateState { copy(showDialog = false) }
     }
 
+    fun onAnswerSelected(answer: String) {
+        updateState { copy(selectedAnswer = answer) }
+    }
 
+    fun onSubmitAnswer() {
+        updateState { copy(showResult = true) }
+    }
+
+    fun onNextQuestion() {
+        val state = uiState.value
+
+        if (state.isLastQuestion) {
+            updateState {
+                copy(
+                    showGame = false,
+                    gameFinished = true,
+                    showResult = false,
+                    selectedAnswer = ""
+                )
+            }
+        } else {
+            updateState {
+                copy(
+                    currentIndex = currentIndex + 1,
+                    selectedAnswer = "",
+                    showResult = false
+                )
+            }
+        }
+    }
 }

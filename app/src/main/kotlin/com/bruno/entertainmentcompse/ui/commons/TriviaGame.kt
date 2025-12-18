@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import com.bruno.entertainmentcompse.R
 import com.bruno.entertainmentcompse.data.remote.TriviaQuestion
+import com.bruno.entertainmentcompse.ui.select.viewmodel.CategoryUiState
 import com.bruno.entertainmentcompse.util.AlertGameDialog
 import com.bruno.entertainmentcompse.util.characterDecode
 
@@ -16,61 +17,43 @@ import com.bruno.entertainmentcompse.util.characterDecode
 
 @Composable
 fun TriviaGame(
-    triviaQuestions: List<TriviaQuestion>,
-    onGameFinished: () -> Unit
+    uiState: CategoryUiState,
+    onAnswerSelected: (String) -> Unit,
+    onSubmit: () -> Unit,
+    onNext: () -> Unit
 ) {
-    var currentIndex by remember { mutableIntStateOf(0) }
-    var selectedAnswer by remember { mutableStateOf("") }
-    var showResult by remember { mutableStateOf(false) }
+    val question = uiState.currentQuestion ?: return
 
-    val currentQuestion = triviaQuestions.getOrNull(currentIndex) ?: run {
-        onGameFinished()
-        return
-    }
-
-    val allAnswers = remember(currentQuestion) {
-        (currentQuestion.incorrectAnswers + currentQuestion.correctAnswer).shuffled()
+    val answers = remember(question) {
+        (question.incorrectAnswers + question.correctAnswer).shuffled()
     }
 
     TriviaQuestionDialog(
-        triviaQuestion = currentQuestion,
-        answers = allAnswers,
-        selectedAnswer = selectedAnswer,
-        onAnswerSelected = { selectedAnswer = it },
-        onSubmit = {
-            showResult = true
-        },
+        triviaQuestion = question,
+        answers = answers,
+        selectedAnswer = uiState.selectedAnswer,
+        onAnswerSelected = onAnswerSelected,
+        onSubmit =onSubmit,
         onDismissRequest = {}
     )
 
-    val isCorrect = selectedAnswer == currentQuestion.correctAnswer
-
-    if (showResult) {
-        val correctAnswerMessage = stringResource(
-            id = R.string.correct_answer_was,
-            characterDecode(currentQuestion.correctAnswer)
-        )
+    if (uiState.showResult) {
         AlertGameDialog(
-            title = if (isCorrect) stringResource(R.string.correct) else stringResource(R.string.incorrect),
-            message = if (isCorrect)
+            title = if (uiState.isCorrect)
+                stringResource(R.string.correct)
+            else
+                stringResource(R.string.incorrect),
+
+            message = if (uiState.isCorrect)
                 stringResource(R.string.well_done)
             else
-                correctAnswerMessage,
-            onDismiss = {
-                showResult = false
-                selectedAnswer = ""
+                stringResource(
+                    R.string.correct_answer_was,
+                    characterDecode(question.correctAnswer)
+                ),
 
-                if (currentIndex + 1 < triviaQuestions.size) {
-                    currentIndex++
-                } else {
-                    onGameFinished()
-                }
-            },
+            onDismiss = onNext,
             confirmText = stringResource(R.string.next)
         )
     }
 }
-
-
-
-

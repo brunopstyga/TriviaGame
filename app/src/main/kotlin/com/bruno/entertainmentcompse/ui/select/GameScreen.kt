@@ -141,8 +141,10 @@ fun CategoryScreen(
             }
             if (uiState.showGame && uiState.triviaQuestions.isNotEmpty()) {
                 TriviaGame(
-                    triviaQuestions = uiState.triviaQuestions,
-                    onGameFinished = viewModel::onGameFinished
+                  uiState = uiState,
+                    onAnswerSelected = viewModel::onAnswerSelected,
+                    onSubmit = viewModel::onSubmitAnswer,
+                    onNext = viewModel::onNextQuestion
                 )
             }
             if (uiState.showDialog) {
