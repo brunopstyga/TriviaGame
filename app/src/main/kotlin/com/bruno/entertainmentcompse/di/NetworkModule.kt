@@ -17,29 +17,33 @@ private const val BASE_URL = "https://opentdb.com/"
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+object NetworkModule {
 
-    @Singleton
     @Provides
-    fun gameApiService(): ApiGame {
+    @Singleton
+    fun provideOkHttpClient(): OkHttpClient =
+        OkHttpClient.Builder().apply {
+            addInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                }
+            )
+            readTimeout(60, TimeUnit.SECONDS)
+            connectTimeout(60, TimeUnit.SECONDS)
+        }.build()
 
-        var okHttpClient: OkHttpClient? = null
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-
-
-        okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(httpLoggingInterceptor)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .build()
-
-        return Retrofit.Builder()
+    @Provides
+    @Singleton
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
+        Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
-            .create(ApiGame::class.java)
-    }
 
+    @Provides
+    @Singleton
+    fun provideGameApi(retrofit: Retrofit): ApiGame =
+        retrofit.create(ApiGame::class.java)
 }
+
