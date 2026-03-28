@@ -1,30 +1,35 @@
 app Trivia Game
 
-Trivia Game es una aplicación Android desarrollada en Kotlin y Jetpack Compose que permite a los usuarios jugar un juego de preguntas personalizables, con respuestas correctas e incorrectas. Los usuarios pueden seleccionar la categoría, dificultad, tipo y cantidad de preguntas. Al finalizar, pueden revisar su desempeño e iniciar una nueva partida.
+Trivia Game is an Android application developed using Kotlin and Jetpack Compose. It allows users to play a customizable trivia game with multiple-choice questions, including correct and incorrect answers. Users can select category, difficulty, type, and number of questions. At the end of the game, they can review their performance and start a new round.
 
-Características principales
+Main Features
 
-Juego de preguntas tipo trivia con múltiples categorías.
-- Configuración personalizada: categoría, dificultad, tipo y número de preguntas.
-- Muestra preguntas con opciones y valida la respuesta seleccionada.
-- Opción de reiniciar el juego una vez finalizado.
-- Obtención dinámica de datos desde una API pública (`OpenTDB`).
-- Arquitectura basada en `MVVM` con `StateFlow` para manejo de estado reactivo.
-- Interfaz moderna y 100% declarativa con `Jetpack Compose`.
-- Inyección de dependencias usando `Hilt`.
-- Soporte de test unitarios con `JUnit`, `MockK`, `Robolectric`, `coroutines-test`.
+- Trivia game with multiple categories  
+- Custom configuration: category, difficulty, question type, and number of questions  
+- Displays questions with multiple-choice answers and validates user selection  
+- Option to restart the game after completion  
+- Dynamic data fetching from a public API (`OpenTDB`)  
+- MVVM architecture with reactive state management using `StateFlow`  
+- Modern and fully declarative UI built with `Jetpack Compose`  
+- Dependency injection using `Hilt`  
+- Unit testing support with `JUnit`, `MockK`, `Robolectric`, and `coroutines-test`
 
-Cómo correr los tests
+  Test Classes
+
+- `TriviaQuestionViewModelTest`: tests question loading from the API and UI state  
+- `GameViewModelTest`: validates game setup logic, configuration, and category loading  
+
+### How to Run Tests
+
+**From Android Studio:**
+- Right-click on the test package and select **Run Tests**
+
+Running Tests
 
 - `TriviaQuestionViewModelTest`: prueba la carga de preguntas desde la API y el estado de la UI.
 - `GameViewModelTest`: valida la lógica para iniciar el juego, configurar preguntas y cargar categorías.
 
-Para ejecutar los tests:
-
-Desde Android Studio:
-- Haz clic derecho sobre el paquete de pruebas y selecciona **Run Tests**.
-
-Desde línea de comandos:
+From command line:
 ```bash
 ./gradlew testDebugUnitTest
 
@@ -68,32 +73,34 @@ MockK, Mockito, Robolectric, JUnit
 
 Coroutines Test, StateFlow, LiveData, Timber
 
-Los datos se obtienen de la API pública de OpenTDB:
+Data is obtained from the OpenTDB public API:
 
-Configuración:
+Configuration:
 https://opentdb.com/api_config.php
 
-Preguntas (ejemplo):
+Example question:
 https://opentdb.com/api.php?amount=10&category=11&difficulty=medium&type=multiple
 
-Estructura de pantallas
+Screens Structure
 GameScreen
-Permite seleccionar categoría, dificultad, tipo de pregunta y cantidad. Contiene el botón "Jugar".
+
+Allows users to select category, difficulty, question type, and number of questions. Includes the "Play" button.
 
 TriviaQuestionScreen
-Muestra las preguntas una por una. Permite responder y muestra si la respuesta fue correcta o incorrecta. Al finalizar, se puede reiniciar.
 
-Arquitectura y patrón de diseño
+Displays questions one by one. Users can answer and see if their answer is correct or incorrect. At the end, they can restart the game.
+
+Architecture
 MVVM (Model-View-ViewModel)
 
-UI 100% declarativa con Jetpack Compose.
+UI 100% declarative with Jetpack Compose.
 
-Estado manejado con StateFlow, compatible con collectAsState() en Compose.
+State handled with StateFlow, compatible with collectAsState() in Compose.
 
-Uso de operadores funcionales (map, combine, filter) para transformar estado.
+Using functional operators (map, combine, filter) to transform state.
 
-Contacto
-Celular: +54 9 341 586-3212
+Contact
+Phone number: +54 9 341 586-3212
 
 Email: bpstyga@gmail.com
 
@@ -101,5 +108,5 @@ LinkedIn: Bruno Pstyga
 
  GitHub: @brunopstyga
 
- Documentación API: OpenTDB
+ Documentation API: OpenTDB
 
